@@ -28,7 +28,7 @@ const Hero: React.FC<HeroProps> = ({ scrollTo }) => {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 md:gap-4 mt-2">
-            <a href="assets/profile/CV_FauzanPutraSanjaya.pdf" download className="flex items-center gap-2 bg-[#0066cc] text-white hover:bg-[#0077ed] px-5 py-2.5 md:px-6 md:py-3 rounded-full font-medium text-sm md:text-base transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/20">
+            <a href="/assets/profile/CV_FauzanPutraSanjaya.pdf" download className="flex items-center gap-2 bg-[#0066cc] text-white hover:bg-[#0077ed] px-5 py-2.5 md:px-6 md:py-3 rounded-full font-medium text-sm md:text-base transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/20">
               <span>Download Resume</span>
               <span className="material-symbols-outlined text-lg">download</span>
             </a>
@@ -45,7 +45,7 @@ const Hero: React.FC<HeroProps> = ({ scrollTo }) => {
 
       {/* Profile Image Card (Span 2 rows vertical) */}
       <div className="glass-card bento-hover rounded-3xl md:col-span-2 lg:col-span-2 row-span-2 relative overflow-hidden group min-h-[250px] md:min-h-0">
-        <img alt="Fauzan Putra Sanjaya" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="assets/profile/profile.png" />
+        <img alt="Fauzan Putra Sanjaya" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="/assets/profile/profile.png" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent flex flex-col justify-end p-6">
           <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             <p className="text-white font-semibold text-lg">Fauzan Sanjaya</p>

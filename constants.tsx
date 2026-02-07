@@ -128,7 +128,7 @@ export const PROJECTS: Project[] = [
     id: 1,
     title: "KAI Pandu",
     description: "AI-powered accessibility app for visually impaired train passengers with voice commands & computer vision.",
-    image: "assets/project/KAI-Pandu/kaipandu.png",
+    image: "/assets/project/KAI-Pandu/kaipandu.png",
     images: [
       "https://images.unsplash.com/photo-1474487548417-781cb714c2f0?auto=format&fit=crop&q=80&w=800",
       "https://images.unsplash.com/photo-1515165592879-1849288ec97a?auto=format&fit=crop&q=80&w=800",
@@ -152,7 +152,7 @@ export const PROJECTS: Project[] = [
     id: 2,
     title: "Jejakriya Protocol",
     description: "Web3 Trust & Liquidity Protocol for the Creative Economy on Sepolia testnet.",
-    image: "assets/project/JejaKriya/jejakriya.png",
+    image: "/assets/project/JejaKriya/jejakriya.png",
     images: [
       "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
       "https://images.unsplash.com/photo-1621504450168-38f647311816?auto=format&fit=crop&q=80&w=800"
@@ -175,9 +175,9 @@ export const PROJECTS: Project[] = [
     id: 3,
     title: "TVRI Journalism",
     description: "Citizen journalism mobile application with real-time chat and video reporting features.",
-    image: "assets/project/TVRI/tvri.png",
+    image: "/assets/project/TVRI/tvri.png",
     images: [
-      "assets/project/TVRI/tvri.png",
+      "/assets/project/TVRI/tvri.png",
     ],
     category: "Mobile",
     techStack: ["flutter", "dart", "git"],
@@ -189,9 +189,9 @@ export const PROJECTS: Project[] = [
     id: 4,
     title: "SRE UI ReEnergize",
     description: "Official summit platform promoting renewable energy transition in Indonesia with competition and event management.",
-    image: "assets/project/SRE/sre.png",
+    image: "/assets/project/SRE/sre.png",
     images: [
-      "assets/project/SRE/sre.png"
+      "/assets/project/SRE/sre.png"
     ],
     category: "Web",
     techStack: ["js", "tailwind", "html", "django"],
@@ -225,9 +225,9 @@ export const PROJECTS: Project[] = [
     id: 6,
     title: "EpiTrack",
     description: "GEMASTIK XVII surveillance system for detecting and monitoring Dengue & TBC outbreaks in smart cities.",
-    image: "assets/project/EpiTrack/epitrack.png",
+    image: "/assets/project/EpiTrack/epitrack.png",
     images: [
-      "assets/project/EpiTrack/epitrack.png"
+      "/assets/project/EpiTrack/epitrack.png"
     ],
     category: "Smart City",
     techStack: ["figma"],
@@ -242,10 +242,10 @@ export const PROJECTS: Project[] = [
     id: 7,
     title: "Emoji Inpainting",
     description: "High-fidelity image restoration system using Conditional GANs (Pix2Pix) and U-Net Generator.",
-    image: "assets/project/emoji/emoji.png",
+    image: "/assets/project/emoji/emoji.png",
     images: [
-      "assets/project/emoji/emoji.png",
-      "assets/project/emoji/emoji2.png"
+      "/assets/project/emoji/emoji.png",
+      "/assets/project/emoji/emoji2.png"
     ],
     category: "AI/Data",
     techStack: ["pytorch", "py", "tensorflow"],
@@ -257,10 +257,10 @@ export const PROJECTS: Project[] = [
     id: 8,
     title: "Vehicle Rental System",
     description: "Fullstack enterprise rental platform with Spring Boot, Docker, and Vue.js frontend.",
-    image: "assets/project/VehicleRental/vehicle.png",
+    image: "/assets/project/VehicleRental/vehicle.png",
     images: [
-      "assets/project/VehicleRental/vehicle.png",
-      "assets/project/VehicleRental/vehicle2.png"
+      "/assets/project/VehicleRental/vehicle.png",
+      "/assets/project/VehicleRental/vehicle2.png"
     ],
     category: "Web",
     techStack: ["java", "spring", "vue", "docker", "aws"],
@@ -296,7 +296,7 @@ export const PROJECTS: Project[] = [
     id: 10,
     title: "MoodTune",
     description: "Aplikasi kesejahteraan emosional yang menggabungkan mood journaling, analitik emosional, dan rekomendasi musik harian berbasis AI + Spotify.",
-    image: "assets/project/MoodTune/moodtune.png",
+    image: "/assets/project/MoodTune/moodtune.png",
     images: [
       "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800",
@@ -320,10 +320,10 @@ export const PROJECTS: Project[] = [
     id: 11,
     title: "SIZOPI : Zoo Information System",
     description: "Integrated Supabase backend for a Next.js frontend to manage exhibits and reservations. Authored SQL datasets and implemented triggers for capacity enforcement and staff rotation. Designed intuitive management interfaces for zoo operations.",
-    image: "assets/project/SIZOPI/sizopi1.png",
+    image: "/assets/project/SIZOPI/sizopi1.png",
     images: [
-      "assets/project/SIZOPI/sizopi.png",
-      "assets/project/SIZOPI/sizopi2.png"
+      "/assets/project/SIZOPI/sizopi.png",
+      "/assets/project/SIZOPI/sizopi2.png"
     ],
     category: "Web",
     techStack: ["nextjs", "supabase", "postgres"],
@@ -336,10 +336,10 @@ export const PROJECTS: Project[] = [
     id: 12,
     title: "QRypto",
     description: "Base Mini-App bridging on-chain IDRX stablecoin to real-world QRIS merchants. Features gasless transactions via Account Abstraction and seamless FaceID/Passkey login with Coinbase Smart Wallet.",
-    image: "assets/project/QRypto/qrypto.png",
+    image: "/assets/project/QRypto/qrypto.png",
     images: [
-      "assets/project/QRypto/qrypto.png",
-      "assets/project/QRypto/qrypto2.png"
+      "/assets/project/QRypto/qrypto.png",
+      "/assets/project/QRypto/qrypto2.png"
     ],
     category: "Web",
     techStack: ["nextjs", "solidity", "ts", "tailwind", "prisma", "foundry", "wagmi", "coinbase", "onchainkit"],
