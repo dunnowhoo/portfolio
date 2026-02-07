@@ -70,7 +70,7 @@ const Hero: React.FC<HeroProps> = ({ scrollTo }) => {
         </a>
         <a className="flex flex-col items-center justify-center gap-2 text-gray-500 hover:text-[#14a800] transition-colors group/icon w-full" href="https://www.upwork.com/freelancers/fauzansanjaya" target="_blank" rel="noreferrer">
           <div className="p-2 md:p-2.5 rounded-full bg-white border border-gray-100 group-hover/icon:scale-110 transition-transform shadow-sm">
-            <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.816v12.657h-2.48V6.632H2.75v14.618h2.586v-6.298h2.48v6.298h2.585v-4.665c.571 2.59 2.244 5.336 4.854 5.336 2.896 0 5.253-2.356 5.253-5.253 0-2.897-2.356-5.253-5.253-5.253z" /></svg>
+            <img src="/assets/upwork.png" className="w-5 h-5 object-contain" alt="Upwork" />
           </div>
           <span className="text-[9px] md:text-[10px] font-semibold uppercase tracking-wide">Upwork</span>
         </a>

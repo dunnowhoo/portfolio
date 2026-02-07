@@ -237,7 +237,7 @@ const Projects = () => {
                         {link.type === 'postman' && <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" className="w-4 h-4" alt="Postman" />}
                         {link.type === 'docs' && <span className="material-symbols-outlined text-[16px]">description</span>}
                         {link.type === 'youtube' && <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>}
-                        {link.type === 'figma' && <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.333 0C6.035 0 4.167 1.865 4.167 4.167c0 2.302 1.868 4.166 4.167 4.166V0zm0 8.333H4.167C1.865 8.333 0 10.198 0 12.5s1.865 4.167 4.167 4.167h4.166V8.333zM12.5 16.667v-4.167H8.333v4.167c0 2.302 1.868 4.166 4.167 4.166s4.167-1.864 4.167-4.166c0-2.302-1.865-4.167-4.167-4.167zM16.667 8.333h-4.167V4.167C12.5 1.865 14.365 0 16.667 0s4.167 1.865 4.167 4.167c0 2.302-1.865 4.166-4.167 4.166z" /></svg>}
+                        {link.type === 'figma' && <img src="/assets/figma.png" className="w-4 h-4 object-contain" alt="Figma" />}
                       </a>
                     ))}
                   </div>
@@ -360,7 +360,7 @@ const Projects = () => {
                       {link.type === 'appstore' && <span className="material-symbols-outlined text-[16px]">ios</span>}
                       {link.type === 'docs' && <span className="material-symbols-outlined text-[16px]">description</span>}
                       {link.type === 'youtube' && <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>}
-                      {link.type === 'figma' && <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.333 0C6.035 0 4.167 1.865 4.167 4.167c0 2.302 1.868 4.166 4.167 4.166V0zm0 8.333H4.167C1.865 8.333 0 10.198 0 12.5s1.865 4.167 4.167 4.167h4.166V8.333zM12.5 16.667v-4.167H8.333v4.167c0 2.302 1.868 4.166 4.167 4.166s4.167-1.864 4.167-4.166c0-2.302-1.865-4.167-4.167-4.167zM16.667 8.333h-4.167V4.167C12.5 1.865 14.365 0 16.667 0s4.167 1.865 4.167 4.167c0 2.302-1.865 4.166-4.167 4.166z" /></svg>}
+                      {link.type === 'figma' && <img src="/assets/figma.png" className="w-4 h-4 object-contain" alt="Figma" />}
                       <span className="capitalize">{link.type}</span>
                     </a>
                   ))}
