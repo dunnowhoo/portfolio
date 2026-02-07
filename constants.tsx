@@ -175,9 +175,9 @@ export const PROJECTS: Project[] = [
     id: 3,
     title: "TVRI Journalism",
     description: "Citizen journalism mobile application with real-time chat and video reporting features.",
-    image: "/assets/project/TVRI/tvri.png",
+    image: "/assets/project/TVRI/TVRI.png",
     images: [
-      "/assets/project/TVRI/tvri.png",
+      "/assets/project/TVRI/TVRI.png",
     ],
     category: "Mobile",
     techStack: ["flutter", "dart", "git"],
@@ -242,10 +242,10 @@ export const PROJECTS: Project[] = [
     id: 7,
     title: "Emoji Inpainting",
     description: "High-fidelity image restoration system using Conditional GANs (Pix2Pix) and U-Net Generator.",
-    image: "/assets/project/emoji/emoji.png",
+    image: "/assets/project/Emoji/Emoji.png",
     images: [
-      "/assets/project/emoji/emoji.png",
-      "/assets/project/emoji/emoji2.png"
+      "/assets/project/Emoji/Emoji.png",
+      "/assets/project/Emoji/emoji2.png"
     ],
     category: "AI/Data",
     techStack: ["pytorch", "py", "tensorflow"],
@@ -320,10 +320,10 @@ export const PROJECTS: Project[] = [
     id: 11,
     title: "SIZOPI : Zoo Information System",
     description: "Integrated Supabase backend for a Next.js frontend to manage exhibits and reservations. Authored SQL datasets and implemented triggers for capacity enforcement and staff rotation. Designed intuitive management interfaces for zoo operations.",
-    image: "/assets/project/SIZOPI/sizopi1.png",
+    image: "/assets/project/Sizopi/sizopi1.png",
     images: [
-      "/assets/project/SIZOPI/sizopi.png",
-      "/assets/project/SIZOPI/sizopi2.png"
+      "/assets/project/Sizopi/sizopi.png",
+      "/assets/project/Sizopi/sizopi2.png"
     ],
     category: "Web",
     techStack: ["nextjs", "supabase", "postgres"],
@@ -336,10 +336,10 @@ export const PROJECTS: Project[] = [
     id: 12,
     title: "QRypto",
     description: "Base Mini-App bridging on-chain IDRX stablecoin to real-world QRIS merchants. Features gasless transactions via Account Abstraction and seamless FaceID/Passkey login with Coinbase Smart Wallet.",
-    image: "/assets/project/QRypto/qrypto.png",
+    image: "/assets/project/Qrypto/qrypto.png",
     images: [
-      "/assets/project/QRypto/qrypto.png",
-      "/assets/project/QRypto/qrypto2.png"
+      "/assets/project/Qrypto/qrypto.png",
+      "/assets/project/Qrypto/qrypto2.png"
     ],
     category: "Web",
     techStack: ["nextjs", "solidity", "ts", "tailwind", "prisma", "foundry", "wagmi", "coinbase", "onchainkit"],
