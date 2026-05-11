@@ -82,43 +82,43 @@ export const ACHIEVEMENTS: Achievement[] = [
 export const EXPERIENCES: Experience[] = [
   {
     id: 1,
-    role: "Mobile Developer",
-    company: "RISTEK Fasilkom UI",
-    period: "Feb 2025 – Present",
-    description: "Leading 'Study Buddy' capstone project and contributing to external client mobile apps. Built a Twitter-like status feature to drive community engagement.",
-    tech: ["Flutter", "Dart", "Mobile"]
+    role: "AI Engineer",
+    company: "EMS Paramitra",
+    period: "Mar 2026 – Apr 2026",
+    description: "Architected a Hybrid Search engine (OpenAI embeddings & PostgreSQL pgvector) and an automated OCR cleaning pipeline achieving over 95% accuracy for the BankSoal platform.",
+    tech: ["Python", "PostgreSQL", "OCR", "OpenRouter", "pgvector", ]
   },
   {
     id: 2,
-    role: "Mobile Developer",
-    company: "TVRI Nasional",
-    period: "Jun 2025 – Dec 2025",
-    description: "Engineered core features for TVRI Citizen Journalism app, implemented real-time WebSocket chat, and managed App Store deployment.",
-    tech: ["Flutter", "WebSockets", "iOS"]
+    role: "Fullstack Engineer Intern",
+    company: "Telkom Indonesia",
+    period: "Feb 2026 – Apr 2026",
+    description: "Engineered 5 scalable B2B MVPs for the Digital Solution Catalog using React and NestJS. Implemented clean code architecture and ensured highly reliable integrations.",
+    tech: ["React", "NestJS", "PostgreSQL", "Docker"]
   },
   {
     id: 3,
-    role: "Software Engineer Intern",
-    company: "Techno Glow Innovation",
-    period: "Jul 2025 - Aug 2025",
-    description: "Developed AI-powered B2B skincare simulator features using ElevenLabs and PubMed API. Optimized Django backend latency for real-time generation.",
-    tech: ["Django", "Python", "AI"],
-    link: "https://ai.iziapp.id/technobsim"
+    role: "Mobile Developer",
+    company: "TVRI Nasional",
+    period: "Jun 2025 – Dec 2025",
+    description: "Engineered core engagement features for TVRI Citizen Journalism app, implemented real-time WebSocket chat, and managed Apple App Store deployment.",
+    tech: ["Flutter", "WebSockets", "iOS"]
   },
   {
     id: 4,
-    role: "Web Developer",
-    company: "Safehome Anara Indonesia",
-    period: "May 2025 - Nov 2025",
-    description: "Developed a platform for gender-based violence victims supported by EU. Conducted usability testing to improve UX/accessibility.",
-    tech: ["Web", "UI/UX", "Frontend"]
+    role: "Software Engineer Intern",
+    company: "Techno Glow Innovation",
+    period: "Jul 2025 - Aug 2025",
+    description: "Developed AI-powered B2B skincare simulator features using Zapier and ElevenLabs. Optimized Django backend latency for real-time generation.",
+    tech: ["Django", "Python", "Zapier"],
+    link: "https://ai.iziapp.id/technobsim"
   },
   {
     id: 5,
     role: "Teaching Assistant",
     company: "Fasilkom UI",
     period: "Jan 2025 – Jun 2025",
-    description: "TA for Principles of Information Systems. Graded assignments and supported learning for 200+ students (9% acceptance rate role).",
+    description: "TA for Principles of Information Systems. Mentored 200+ students (9% acceptance rate) and provided actionable feedback.",
     tech: ["Teaching", "Mentoring"]
   }
 ];
