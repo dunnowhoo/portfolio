@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2997ff"/>
+      <stop offset="0.55" stop-color="#0066cc"/>
+      <stop offset="1" stop-color="#0a2a66"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <rect x="2" y="2" width="60" height="30" rx="13" fill="url(#shine)"/>
+  <!-- F monogram -->
+  <path d="M17 14h24a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3H26v6h12a3 3 0 0 1 3 3v2.5a3 3 0 0 1-3 3H26V47a3 3 0 0 1-3 3h-3a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z" fill="#ffffff"/>
+  <!-- AI sparkle -->
+  <path d="M49 33c.9 4.6 2.4 6.1 7 7-4.6.9-6.1 2.4-7 7-.9-4.6-2.4-6.1-7-7 4.6-.9 6.1-2.4 7-7z" fill="#7cf0c4"/>
+</svg>
