@@ -1,22 +1,76 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+
+const TRACK_ID = '75l9zUSkj3eexkmDdaYHBZ';
+const START_AT_SECONDS = 60;
+
+declare global {
+    interface Window {
+        onSpotifyIframeApiReady?: (IFrameAPI: any) => void;
+        SpotifyIframeApi?: any;
+    }
+}
 
 const Spotify = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        // The iFrame API replaces this placeholder with its own iframe
+        const placeholder = document.createElement('div');
+        container.replaceChildren(placeholder);
+
+        const mount = (IFrameAPI: any) => {
+            IFrameAPI.createController(
+                placeholder,
+                { uri: `spotify:track:${TRACK_ID}`, width: '100%', height: 352 },
+                (controller: any) => {
+                    // Embeds can't start mid-track on their own, so jump to 1:00 on first play
+                    let seeked = false;
+                    controller.addListener('playback_update', (e: any) => {
+                        if (!seeked && !e.data.isPaused && e.data.position < START_AT_SECONDS * 1000) {
+                            seeked = true;
+                            controller.seek(START_AT_SECONDS);
+                        }
+                    });
+                }
+            );
+        };
+
+        // Plain embed if the API script can't load
+        const fallback = () => {
+            container.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${TRACK_ID}?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        };
+
+        if (window.SpotifyIframeApi) {
+            mount(window.SpotifyIframeApi);
+        } else {
+            window.onSpotifyIframeApiReady = (IFrameAPI) => {
+                window.SpotifyIframeApi = IFrameAPI;
+                mount(IFrameAPI);
+            };
+            if (!document.getElementById('spotify-iframe-api')) {
+                const script = document.createElement('script');
+                script.id = 'spotify-iframe-api';
+                script.src = 'https://open.spotify.com/embed/iframe-api/v1';
+                script.async = true;
+                script.onerror = fallback;
+                document.body.appendChild(script);
+            }
+        }
+
+        return () => container.replaceChildren();
+    }, []);
+
     return (
         <div className="glass-card bento-hover rounded-3xl md:col-span-4 lg:col-span-4 row-span-1 min-h-[352px] overflow-hidden p-0 flex flex-col md:flex-row items-center gap-6 bg-white/50">
             {/* Spotify Embed */}
             <div className="w-full md:w-2/3 h-full p-4 flex items-center justify-center">
-                <iframe
-                    data-testid="embed-iframe"
-                    style={{ borderRadius: '24px' }}
-                    src="https://open.spotify.com/embed/track/4iveM86TL9ombdSfV9T1P9?utm_source=generator&theme=0"
-                    width="100%"
-                    height="352"
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"
-                    className="shadow-lg"
-                ></iframe>
+                <div
+                    ref={containerRef}
+                    className="w-full h-[352px] rounded-[24px] overflow-hidden shadow-lg"
+                ></div>
             </div>
 
             {/* Listening Status */}

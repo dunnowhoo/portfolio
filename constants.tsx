@@ -1,11 +1,11 @@
 import { Experience, Project, Achievement, Organization } from './types';
 
 export const TECH_STACK = [
-  'flutter', 'dart', 'js', 'ts', 'nextjs', 'vue',
-  'py', 'pytorch', 'tensorflow', 'sklearn',
-  'java', 'spring', 'django', 'postgres',
-  'supabase', 'docker', 'git', 'postman',
-  'selenium', 'aws'
+  'flutter', 'dart', 'js', 'ts', 'react', 'nextjs', 'vue', 'tailwind',
+  'py', 'pytorch', 'tensorflow', 'sklearn', 'opencv',
+  'java', 'spring', 'nestjs', 'fastapi', 'django',
+  'postgres', 'redis', 'supabase', 'docker', 'gcp', 'aws',
+  'git', 'postman', 'selenium'
 ];
 
 export const ORGANIZATIONS: Organization[] = [
@@ -48,6 +48,12 @@ export const ORGANIZATIONS: Organization[] = [
 
 export const ACHIEVEMENTS: Achievement[] = [
   {
+    id: 5,
+    title: "2nd Runner Up Datathon",
+    description: "Datathon RISTEK Fasilkom UI 2026",
+    icon: "military_tech"
+  },
+  {
     id: 0,
     title: "Awardee Scholarship",
     description: "Pertamina Sobat Bumi 2025",
@@ -81,12 +87,20 @@ export const ACHIEVEMENTS: Achievement[] = [
 
 export const EXPERIENCES: Experience[] = [
   {
+    id: 6,
+    role: "AI Solutions Engineer",
+    company: "Halo AI",
+    period: "Jun 2026 – Sep 2026",
+    description: "Built production AI agents across WhatsApp, Shopee, and Instagram for 24/7 sales and customer support. Engineered RAG pipelines with custom tool-calling and strict guardrails to pull live pricing, schedules, and catalog data without hallucination. Automated B2B SOPs into appointment scheduling, CRM ticketing, invoicing, and human-agent escalation, backed by auto-grader evaluation suites and multi-turn stress tests.",
+    tech: ["LLM Agents", "RAG", "Tool Calling", "WhatsApp API", "AI Evaluation"]
+  },
+  {
     id: 1,
     role: "AI Engineer",
     company: "EMS Paramitra",
-    period: "Mar 2026 – Apr 2026",
-    description: "Architected a Hybrid Search engine (OpenAI embeddings & PostgreSQL pgvector) and an automated OCR cleaning pipeline achieving over 95% accuracy for the BankSoal platform.",
-    tech: ["Python", "PostgreSQL", "OCR", "OpenRouter", "pgvector", ]
+    period: "Mar 2026 – Jun 2026",
+    description: "Architected a Hybrid Search engine combining OpenAI semantic embeddings and PostgreSQL fuzzy search, achieving >95% OCR accuracy for the BankSoal platform. Developed a scalable ML auto-classification system (KNN + category centroid embeddings) to automate the question bank ecosystem and reduce manual operations. Leveraged cloud-based LLM APIs (OpenRouter) to build an end-to-end OCR cleaning pipeline for enterprise content management.",
+    tech: ["Python", "PostgreSQL", "OCR", "OpenRouter", "OpenAI Embeddings", "KNN"]
   },
   {
     id: 2,
@@ -124,6 +138,92 @@ export const EXPERIENCES: Experience[] = [
 ];
 
 export const PROJECTS: Project[] = [
+  {
+    id: 13,
+    title: "DermatoAI",
+    description: "2nd Runner Up Datathon RISTEK 2026. Multimodal agentic AI for skin lesion triage and last-mile care navigation. Two ONNX models (EfficientNet-B0 oncology, AUC 0.936; ConvNeXt-Tiny for 9 common conditions) fuse the photo with patient history. A deterministic, code-enforced Safety Gate owns urgency, not the LLM: it can retake, abstain, or escalate, blocks OTC products for suspected malignancy, and routes users to a doctor or to PubMed-backed self-care. Built the FastAPI backend, FSM agent orchestrator, and Cloud Run CI/CD.",
+    image: "/assets/project/DermatoAI/dermato.png",
+    images: [
+      "/assets/project/DermatoAI/dermato.png"
+    ],
+    category: "AI/Data",
+    techStack: ["py", "pytorch", "nextjs", "ts", "postgres", "docker"],
+    links: [
+      { type: "github", url: "https://github.com/dunnowhoo/dermato-ai" },
+      { type: "url", url: "https://huggingface.co/dunnowho/dermatoai-multimodal" },
+      { type: "url", url: "https://dermato-2vismcfva-fauzan-putra-sanjayas-projects.vercel.app/appointments" }
+    ],
+    embed: `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAHVL4ua_i0/Q78OK3RY7mz2KY5G0o8MDw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHVL4ua_i0&#x2F;Q78OK3RY7mz2KY5G0o8MDw&#x2F;view?utm_content=DAHVL4ua_i0&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Salinan dari [Draf] Pitch Deck - NAGA CIPUTAT</a> oleh Fauzan Putra.S`
+  },
+  {
+    id: 14,
+    title: "DKE Smart Sales & CRM",
+    description: "Enterprise omnichannel sales and customer care platform for a major aesthetic clinic, built on Next.js 16 and an Odoo 17 backend. Features a real-time multi-session WhatsApp Shared Inbox (SSE + Redis Pub/Sub) with atomic SQL locking for race-free ticket claiming, internal ticketing between Customer Care and Expert Staff, promo broadcasts, Shopee transaction sync, and analytics dashboards. Deployed with immutable Docker images on GCP Compute Engine and Cloud SQL as Lead Programmer & Cloud Architect.",
+    image: "/assets/project/DKE/dke.png",
+    images: [
+      "/assets/project/DKE/dke.png"
+    ],
+    category: "Web",
+    techStack: ["nextjs", "ts", "tailwind", "py", "postgres", "docker"],
+    links: [
+      { type: "github", url: "https://github.com/dunnowhoo/dke-be" },
+      { type: "github", url: "https://github.com/dunnowhoo/dke-fe" },
+      { type: "url", url: "https://propenheimer.vercel.app" }
+    ],
+    embed: `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAHMp62zdq0/IXG8lq2VBMToI9Ig_0rhdw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHMp62zdq0&#x2F;IXG8lq2VBMToI9Ig_0rhdw&#x2F;view?utm_content=DAHMp62zdq0&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">DKE Smart Sales</a> oleh Fauzan Putra.S`
+  },
+  {
+    id: 15,
+    title: "Saka : Psychological Assessment App",
+    description: "Resilience & mental health mobile app funded by the BIMA research grant. Users take the K-10 mental health assessment, enriched by an AI stimulus stage where recorded video and audio run through asynchronous facial and speech emotion recognition, plus an RRM resilience questionnaire, assessment history, and gated psychoeducation (topic → material → quiz, pass mark ≥ 85). Flutter with Clean Architecture (BLoC/Cubit, get_it, go_router) on Supabase Auth, Postgres RLS, Storage, and Edge Functions.",
+    image: "/assets/project/Saka/saka.png",
+    images: [
+      "/assets/project/Saka/saka.png"
+    ],
+    category: "Mobile",
+    techStack: ["flutter", "dart", "supabase", "postgres", "py"],
+    links: []
+  },
+  {
+    id: 16,
+    title: "Almanac : Crypto Quant System",
+    description: "Quantitative crypto futures trading system. An 11-strategy tournament across 46 coins produced a momentum-based ensemble, re-validated on 88 coins over 6 years with a Deflated Sharpe Ratio check and cross-exchange validation on Binance with no parameter changes. Ships with a Python engine for paper trading, an order-flow collector, and a Next.js dashboard on public Bybit v5 data for daily signals, position sizing, Monte Carlo projections, and a trade journal. The TypeScript strategy port matches the Python engine bar-for-bar (7,100/7,100).",
+    image: "/assets/project/Almanac/almanac.png",
+    images: [
+      "/assets/project/Almanac/almanac.png"
+    ],
+    category: "AI/Data",
+    techStack: ["py", "nextjs", "ts", "supabase"],
+    links: []
+  },
+  {
+    id: 17,
+    title: "Rekap AI : Monthly Spending Tracker",
+    description: "Turns Bank Mandiri and BCA e-Statement PDFs into a clean monthly finance recap with automatic transaction extraction, category classification, and a cash-flow dashboard. Classification runs in two deliberate stages: deterministic rules (177 known merchants plus structural patterns) first, then Groq LLM only for unrecognized merchants. Benchmarked on 204 unique merchants, letting the LLM override confident rules lowered accuracy, so the model never overrides them and any LLM failure falls back to rules safely.",
+    image: "/assets/project/RekapAI/rekap.png",
+    images: [
+      "/assets/project/RekapAI/rekap.png"
+    ],
+    category: "AI/Data",
+    techStack: ["nextjs", "ts", "supabase", "postgres", "tailwind"],
+    links: [
+      { type: "url", url: "https://www.rekap-ai.com/" }
+    ]
+  },
   {
     id: 1,
     title: "KAI Pandu",

@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ scrollTo }) => {
               <span className="text-[#86868b]">Sanjaya.</span>
             </h1>
             <p className="text-text-secondary text-base md:text-lg lg:text-xl max-w-lg leading-relaxed font-normal">
-              Software Engineer specializing in <span className="text-text-main font-semibold">Mobile Development</span>, AI Integration, and scalable Fullstack Systems.
+<span className="text-text-main font-semibold">AI Solutions Engineer</span> & <span className="text-text-main font-semibold">Mobile Fullstack Developer</span> building LLM agents, RAG pipelines, and scalable mobile & web systems.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 md:gap-4 mt-2">
