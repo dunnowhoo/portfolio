@@ -327,3 +327,12 @@ Perubahan dari rencana awal di atas:
 - **Region function:** `vercel.json` mengunci `"regions": ["sin1"]` supaya function berjalan dekat Neon (`aws-ap-southeast-1`). Default Vercel adalah `iad1`; di sana health check Postgres memakan ±1,6 detik karena tiap query menyeberang Pasifik.
 - Diisi oleh `npm run setup:secrets`: `DASHBOARD_SLUG`, `AUTH_SECRET`, `CRON_SECRET`.
 - Diisi oleh `npm run hash-password`: `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH_B64`.
+
+## 17. Catatan implementasi M2 (9 November 2026)
+
+- **Data jalur** ada di `lib/dojo/curriculum/` (TypeScript, bukan DB): 日本語 271 node dalam 49 unit, DSA 332 node dalam 40 unit. ID node stabil (`jp-iro-x01`, `jp-1.4-grammar`, `lc-217`, `dsa-d6-boss`), jadi progres di DB tidak rusak kalau urutan berubah.
+- **Aturan buka:** node dalam unit terbuka berurutan; unit berikutnya terbuka kalau checkpoint lulus atau semua node wajibnya selesai. Target eksternal (Anki, Duolingo) dan milestone bertanggal (war, ujian) tidak pernah dikunci dan tidak menghalangi node lain. Tes lompat: checkpoint unit yang masih terkunci bisa dikerjakan; kalau lulus, node wajib sebelumnya ditandai `skipped` dengan 50% XP.
+- **Mesin XP** (`lib/dojo/engine/core.ts`): setiap aktivitas = satu `activity_event` dengan `dedupe_key` (mis. `node:jp-0.1-hira-a`), jadi XP satu node tidak bisa didapat dua kali. Bonus daily goal, milestone streak, 二刀流, freeze otomatis, dan repair dihitung di transaksi yang sama. Pergantian hari diterapkan secara malas (`syncStreaks`) saat halaman dibuka atau XP masuk, sehingga tidak butuh cron untuk streak. `awardBatch` dipakai untuk banyak event sekaligus (tes lompat).
+- **Materi** dirender dari Markdown ke HTML di server (unified + GFM + highlight), lalu disisipkan di klien; isinya file milik sendiri. Catatan pengguna tetap teks biasa. `outputFileTracingIncludes` memastikan `content/dojo/**` ikut ke fungsi Vercel.
+- **Video:** kurikulum hanya menyimpan kata kunci pencarian, bukan ID video yang ditebak. Node video menampilkan tombol "Cari di YouTube" dan form tempel link; link YouTube yang ditempel diputar lewat `youtube-nocookie.com`.
+- **Tes:** E2E berjalan di branch Neon `e2e` (salinan copy-on-write dari `production`), jadi tes yang menyelesaikan node tidak pernah mengubah XP atau streak asli. Branch itu bisa di-reset dari production kapan saja (`neon branches reset e2e --parent`).

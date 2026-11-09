@@ -88,6 +88,31 @@
             scrollbar-width: none;
         }
     
+@keyframes toast-in { from { opacity: 0; transform: translateY(-6px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+/* ---- Dōjō: teks materi (HTML dari Markdown) ---- */
+.dojo-prose { color: #1d1d1f; font-size: 15px; line-height: 1.7; }
+.dojo-prose > * + * { margin-top: 0.85em; }
+.dojo-prose > :first-child { margin-top: 0; }
+.dojo-prose h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; margin-top: 0; }
+.dojo-prose h2 { font-size: 1.25rem; font-weight: 700; margin-top: 1.6em; scroll-margin-top: 6rem; }
+.dojo-prose h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.3em; scroll-margin-top: 6rem; }
+.dojo-prose p, .dojo-prose li { color: #3a3a3c; }
+.dojo-prose a { color: #0066cc; text-decoration: underline; text-underline-offset: 2px; }
+.dojo-prose ul { list-style: disc; padding-left: 1.3em; }
+.dojo-prose ol { list-style: decimal; padding-left: 1.3em; }
+.dojo-prose li + li { margin-top: 0.25em; }
+.dojo-prose strong { color: #1d1d1f; font-weight: 600; }
+.dojo-prose blockquote { border-left: 3px solid #e5e5ea; padding-left: 1em; color: #6e6e73; }
+.dojo-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.86em; background: #f2f2f7; border-radius: 6px; padding: 0.1em 0.35em; }
+.dojo-prose pre { position: relative; background: #f6f8fa; border: 1px solid #e5e5ea; border-radius: 14px; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+.dojo-prose pre code { background: transparent; padding: 0; font-size: inherit; }
+.dojo-prose table { width: 100%; border-collapse: collapse; font-size: 13.5px; display: block; overflow-x: auto; }
+.dojo-prose th, .dojo-prose td { border-bottom: 1px solid #e5e5ea; padding: 7px 10px; text-align: left; vertical-align: top; }
+.dojo-prose th { font-weight: 600; color: #1d1d1f; background: #fafafc; white-space: nowrap; }
+.dojo-prose hr { border: 0; border-top: 1px solid #e5e5ea; margin: 1.6em 0; }
+.dojo-prose :lang(ja), .font-jp { font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif; }
+
 /* ---- Banner kucing (pengganti kartu Spotify) ---- */
 @keyframes cat-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.03); } }
 @keyframes cat-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }

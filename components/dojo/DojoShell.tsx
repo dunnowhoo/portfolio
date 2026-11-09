@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { logoutAction } from '@/app/actions/auth';
+import AwardToaster from '@/components/dojo/AwardToaster';
 
 const MAIN = [
   { seg: 'beranda', icon: 'home', label: 'Beranda' },
@@ -53,6 +54,7 @@ export default function DojoShell({ gate, children }: { gate: string; children: 
         </div>
       </nav>
 
+      <AwardToaster />
       <main className="relative z-10 container mx-auto px-4 md:px-6 pt-8 md:pt-28 pb-28 md:pb-20 max-w-7xl">{children}</main>
 
       {/* HP: tab bar bawah */}
