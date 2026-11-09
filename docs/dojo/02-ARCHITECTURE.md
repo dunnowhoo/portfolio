@@ -324,5 +324,6 @@ Perubahan dari rencana awal di atas:
 - Diisi oleh `neon deploy`/`neon env pull`: `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, `NEON_BRANCH_ID`, `NEON_FUNCTION_HOST_SUFFIX`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION`.
 - **Di Vercel**, kredensial storage disimpan sebagai `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY`, `STORAGE_ENDPOINT`, dan `STORAGE_REGION`, karena nama `AWS_*` dipakai runtime Vercel sendiri. `lib/storage.ts` memakai `STORAGE_*` dulu, lalu fallback ke `AWS_*` di lokal.
 - `DATABASE_URL_UNPOOLED` tidak dipasang di Vercel; hanya dipakai untuk migrasi dari laptop.
+- **Region function:** `vercel.json` mengunci `"regions": ["sin1"]` supaya function berjalan dekat Neon (`aws-ap-southeast-1`). Default Vercel adalah `iad1`; di sana health check Postgres memakan ±1,6 detik karena tiap query menyeberang Pasifik.
 - Diisi oleh `npm run setup:secrets`: `DASHBOARD_SLUG`, `AUTH_SECRET`, `CRON_SECRET`.
 - Diisi oleh `npm run hash-password`: `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH_B64`.
