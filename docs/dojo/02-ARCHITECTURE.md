@@ -310,7 +310,7 @@ Perubahan dari rencana awal di atas:
 | Vercel Cron | **Neon Functions** (fungsi `hello` sudah ter-deploy, jadwal cron menyusul di M3/M5) | Neon Function Triggers mendukung cron, dan paket Hobby Vercel hanya 1× sehari |
 | Tailwind v4 | **Tailwind v3.4** | Supaya hasil render identik dengan Tailwind CDN lama (v3) |
 | `next/font` | `@import` Google Fonts di baris paling atas `app/globals.css` | Urutan CSS harus sama dengan situs lama. Kalau tidak, `.material-symbols-outlined` mengalahkan `text-[14px]` |
-| Pintu masuk lewat slug | **Kursor `▍` di baris prompt** pada banner *agent run* (klik 3× dalam 1,5 detik / tekan lama ±0,9 detik) membuka form login. Banner ini menggantikan kartu Spotify dan tidak bertema Jepang (permintaan pemilik, 9 Nov 2026). Slug baru dikirim server setelah login berhasil | Permintaan pemilik. Slug tidak pernah ada di HTML publik |
+| Pintu masuk lewat slug | **Lonceng emas di kalung kucing jantan** pada banner kucing (klik 3× dalam 1,5 detik / tekan lama ±0,9 detik) membuka form login. Banner ini menggantikan kartu Spotify dan tidak bertema Jepang (permintaan pemilik, 9 Nov 2026). Klik dicek lewat hit-test koordinat di `components/site/cats/CatScene.tsx`, jadi lonceng tetap bisa diklik walau ada kucing yang lewat di depannya Slug baru dikirim server setelah login berhasil | Permintaan pemilik. Slug tidak pernah ada di HTML publik |
 | `SESSION_SECRET`, `ADMIN_PASSWORD_HASH` | `AUTH_SECRET`, `ADMIN_PASSWORD_HASH_B64` (base64) | Karakter `$` di hash argon2 bisa diekspansi oleh loader `.env` |
 
 **Temuan keamanan saat uji E2E:**

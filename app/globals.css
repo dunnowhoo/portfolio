@@ -88,14 +88,37 @@
             scrollbar-width: none;
         }
     
-/* ---- Kursor banner "agent run" (pengganti kartu Spotify) ---- */
-@keyframes caret-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-.caret-blink { animation: caret-blink 1.06s steps(1, end) infinite; }
+/* ---- Banner kucing (pengganti kartu Spotify) ---- */
+@keyframes cat-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.03); } }
+@keyframes cat-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes cat-tail { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-8deg); } }
+@keyframes cat-tail-l { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } }
+@keyframes dev-type { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.4px); } }
+@keyframes dev-bit { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-30px); } }
+@keyframes cat-pop { 0% { opacity: 0; transform: translateY(4px) scale(0.6); } 18% { opacity: 1; transform: translateY(-4px) scale(1); } 100% { opacity: 0; transform: translateY(-36px) scale(1); } }
+@keyframes cat-fade { 0% { opacity: 0; } 18% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes code-caret { 0%, 49% { opacity: 0.7; } 50%, 100% { opacity: 0; } }
+.cat-breathe, .cat-breathe-f, .cat-blink, .cat-tail-m, .cat-tail-f, .cat-tail-l, .cat-pop { transform-box: fill-box; }
+.cat-breathe { transform-origin: 50% 100%; animation: cat-breathe 3.8s ease-in-out infinite; }
+.cat-breathe-f { transform-origin: 50% 100%; animation: cat-breathe 3.1s ease-in-out -1.2s infinite; }
+.cat-blink { transform-origin: 50% 50%; animation: cat-blink 5.4s infinite; }
+.cat-blink.slow { animation-duration: 6.8s; animation-delay: -2.4s; }
+.cat-blink.fast { animation-duration: 4.2s; animation-delay: -0.8s; }
+.cat-tail-m { transform-origin: 100% 0%; animation: cat-tail 4.6s ease-in-out infinite; }
+.cat-tail-f { transform-origin: 100% 15%; animation: cat-tail 2.8s ease-in-out infinite; }
+.cat-tail-l { transform-origin: 100% 100%; animation: cat-tail-l 1.3s ease-in-out infinite; }
+.dev-type { animation: dev-type 0.3s steps(2, end) infinite; }
+.dev-bit { opacity: 0; animation: dev-bit 2.4s ease-out infinite; }
+.dev-bit.d2 { animation-delay: 0.6s; }
+.dev-bit.d3 { animation-delay: 1.2s; }
+.dev-bit.d4 { animation-delay: 1.8s; }
+.cat-pop { transform-origin: 50% 100%; animation: cat-pop 1.25s ease-out forwards; }
+.code-caret { animation: code-caret 1.06s steps(1, end) infinite; }
+@media (hover: hover) and (pointer: fine) { .cat-scene.live { cursor: none; } }
+.cat-scene .cat-gh { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
-  .caret-blink { animation: none; }
+  .cat-breathe, .cat-breathe-f, .cat-blink, .cat-tail-m, .cat-tail-f, .cat-tail-l, .dev-type, .dev-bit, .code-caret { animation: none; }
+  .cat-pop { animation: cat-fade 1.25s ease-out forwards; }
 }
 
 @tailwind utilities;
