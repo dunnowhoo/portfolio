@@ -3,6 +3,7 @@ import { getDb } from '@/db/client';
 import { getSession } from '@/lib/auth/session';
 import { getFiles } from '@/lib/storage';
 import { callNeonFunction } from '@/lib/neon-functions';
+import { loadGrammar, loadKanji, loadMaterials } from '@/lib/dojo/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,6 +49,12 @@ export async function GET(req: Request) {
     return `hello → ${res.status} "${text.slice(0, 60)}"`;
   });
 
-  const ok = postgres.ok && storage.ok && functions.ok;
-  return Response.json({ ok, postgres, storage, functions }, { status: ok ? 200 : 500, headers: { 'Cache-Control': 'no-store' } });
+  const content = await timed(async () => {
+    const all = await loadMaterials();
+    const [kanji, grammar] = await Promise.all([loadKanji(), loadGrammar()]);
+    if (all.length < 30 || kanji.length < 80 || grammar.length < 180) throw new Error(`materi ${all.length}, kanji ${kanji.length}, grammar ${grammar.length}`);
+    return `${all.length} materi · ${kanji.length} kanji · ${grammar.length} poin grammar`;
+  });
+  const ok = postgres.ok && storage.ok && functions.ok && content.ok;
+  return Response.json({ ok, postgres, storage, functions, content }, { status: ok ? 200 : 500, headers: { 'Cache-Control': 'no-store' } });
 }
