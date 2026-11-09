@@ -1,0 +1,124 @@
+/* Diimpor PALING ATAS supaya utilitas Tailwind (mis. text-[14px] pada ikon) menang, sama seperti urutan di situs lama */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght%2CFILL@100..700%2C0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+
+/* ---- Gaya kustom dari index.html lama (disalin apa adanya, sebelum utilities seperti urutan CDN) ---- */
+        body {
+            background-color: #f5f5f7; /* Apple Gray Background */
+            color: #1d1d1f;
+            min-height: 100vh;
+        }
+        
+        /* LIQUID GLASS MORPHISM STYLE */
+        .glass-card {
+            /* Translucent white base with gradient for light direction */
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.65) 100%);
+            
+            /* High blur for the material feel */
+            backdrop-filter: blur(25px) saturate(120%);
+            -webkit-backdrop-filter: blur(25px) saturate(120%);
+            
+            /* Border that catches light on top */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            
+            /* Complex shadows: Outer drop + Inner glow (inset) for volume */
+            box-shadow: 
+                0 10px 30px -5px rgba(0, 0, 0, 0.04),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.5); /* The liquid factor */
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+        }
+
+        .glass-card-strong {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 15px 35px -5px rgba(0, 0, 0, 0.06),
+                inset 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.05),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .bento-hover {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .bento-hover:hover {
+            transform: translateY(-6px) scale(1.01);
+            /* Stronger gloss on hover */
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 1);
+            z-index: 10;
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #d1d1d6, transparent);
+            z-index: 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            letter-spacing: -0.015em;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    
+/* ---- Banner kucing (pengganti kartu Spotify) ---- */
+@keyframes cat-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.03); } }
+@keyframes cat-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes cat-tail { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-8deg); } }
+@keyframes cat-tail-l { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } }
+@keyframes dev-type { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.4px); } }
+@keyframes dev-bit { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-30px); } }
+@keyframes cat-pop { 0% { opacity: 0; transform: translateY(4px) scale(0.6); } 18% { opacity: 1; transform: translateY(-4px) scale(1); } 100% { opacity: 0; transform: translateY(-36px) scale(1); } }
+@keyframes cat-fade { 0% { opacity: 0; } 18% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes code-caret { 0%, 49% { opacity: 0.7; } 50%, 100% { opacity: 0; } }
+.cat-breathe, .cat-breathe-f, .cat-blink, .cat-tail-m, .cat-tail-f, .cat-tail-l, .cat-pop { transform-box: fill-box; }
+.cat-breathe { transform-origin: 50% 100%; animation: cat-breathe 3.8s ease-in-out infinite; }
+.cat-breathe-f { transform-origin: 50% 100%; animation: cat-breathe 3.1s ease-in-out -1.2s infinite; }
+.cat-blink { transform-origin: 50% 50%; animation: cat-blink 5.4s infinite; }
+.cat-blink.slow { animation-duration: 6.8s; animation-delay: -2.4s; }
+.cat-blink.fast { animation-duration: 4.2s; animation-delay: -0.8s; }
+.cat-tail-m { transform-origin: 55% 0%; animation: cat-tail 4.6s ease-in-out infinite; }
+.cat-tail-f { transform-origin: 41% 0%; animation: cat-tail 2.8s ease-in-out infinite; }
+.cat-tail-l { transform-origin: 100% 100%; animation: cat-tail-l 1.3s ease-in-out infinite; }
+.dev-type { animation: dev-type 0.3s steps(2, end) infinite; }
+.dev-bit { opacity: 0; animation: dev-bit 2.4s ease-out infinite; }
+.dev-bit.d2 { animation-delay: 0.6s; }
+.dev-bit.d3 { animation-delay: 1.2s; }
+.dev-bit.d4 { animation-delay: 1.8s; }
+.cat-pop { transform-origin: 50% 100%; animation: cat-pop 1.25s ease-out forwards; }
+.code-caret { animation: code-caret 1.06s steps(1, end) infinite; }
+@media (hover: hover) and (pointer: fine) { .cat-scene.live { cursor: none; } }
+.cat-scene .cat-gh { cursor: pointer; }
+@media (prefers-reduced-motion: reduce) {
+  .cat-breathe, .cat-breathe-f, .cat-blink, .cat-tail-m, .cat-tail-f, .cat-tail-l, .dev-type, .dev-bit, .code-caret { animation: none; }
+  .cat-pop { animation: cat-fade 1.25s ease-out forwards; }
+}
+
+@tailwind utilities;
