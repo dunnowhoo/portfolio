@@ -64,9 +64,9 @@ export const WIDE: Layout = {
   shelf: { x: 642, y: 236 },
   code: {
     x: 58,
-    y: 40,
+    y: 34,
     size: 13.5,
-    lh: 21,
+    lh: 20,
     lines: [
       ...head,
       row('seal point', 'senior napper', 'XL'),

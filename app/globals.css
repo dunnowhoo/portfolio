@@ -104,8 +104,8 @@
 .cat-blink { transform-origin: 50% 50%; animation: cat-blink 5.4s infinite; }
 .cat-blink.slow { animation-duration: 6.8s; animation-delay: -2.4s; }
 .cat-blink.fast { animation-duration: 4.2s; animation-delay: -0.8s; }
-.cat-tail-m { transform-origin: 100% 0%; animation: cat-tail 4.6s ease-in-out infinite; }
-.cat-tail-f { transform-origin: 100% 15%; animation: cat-tail 2.8s ease-in-out infinite; }
+.cat-tail-m { transform-origin: 55% 0%; animation: cat-tail 4.6s ease-in-out infinite; }
+.cat-tail-f { transform-origin: 41% 0%; animation: cat-tail 2.8s ease-in-out infinite; }
 .cat-tail-l { transform-origin: 100% 100%; animation: cat-tail-l 1.3s ease-in-out infinite; }
 .dev-type { animation: dev-type 0.3s steps(2, end) infinite; }
 .dev-bit { opacity: 0; animation: dev-bit 2.4s ease-out infinite; }

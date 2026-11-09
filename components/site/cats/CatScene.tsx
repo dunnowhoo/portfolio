@@ -219,7 +219,7 @@ function paint(s: Sim, L: Layout, E: Els) {
   let tilt = -5 * (1 - Math.min(1, runK / 0.15)); // jongkok main: pantat naik
   if (ly.jumping) tilt = -20 + 34 * Math.min(1, ly.jt / ly.jdur);
   const bob = -Math.abs(Math.sin(ly.gait)) * 4 * runK;
-  tf('lynx-body', `translate(0 ${n2(ly.y / S + bob)}) rotate(${n2(tilt)} 30 -20) scale(${n2(1 + sq * 0.07)} ${n2(1 - sq * 0.09)})`);
+  tf('lynx-body', `translate(0 ${n2(ly.y / S + bob)}) rotate(${n2(tilt)} 20 -14) scale(${n2(1 + sq * 0.07)} ${n2(1 - sq * 0.09)})`);
   const A = 40 * runK;
   const g = ly.gait;
   const legs: Record<LegName, number> = ly.jumping
@@ -238,7 +238,7 @@ function paint(s: Sim, L: Layout, E: Els) {
   tf('female-shadow', `translate(${n2(f.x)} ${F}) scale(${n2(fk * (1 + f.y / (160 * S)))} ${n2(fk)})`);
 
   const sw = s.male.swat > 0 ? Math.sin(Math.PI * (1 - s.male.swat)) : 0;
-  tf('m-swat', `translate(${n2(-40 * sw)} ${n2(-28 * sw)}) rotate(${n2(-25 * sw)} -72 -30)`);
+  tf('m-swat', `translate(${n2(-44 * sw)} ${n2(-30 * sw)}) rotate(${n2(-25 * sw)} -56 -44)`);
 
   // Mata (dan kepala) mengikuti laser; tanpa laser, masing-masing punya tontonan sendiri
   const T = s.laser.on ? s.laser : null;
@@ -252,12 +252,12 @@ function paint(s: Sim, L: Layout, E: Els) {
     tf(`${pre}r`, v);
     return dx;
   };
-  const mdx = look('m-p', L.male + MALE_HEAD.x * S, F + MALE_HEAD.y * S, 3.2, s.ball.x, F - 10);
+  const mdx = look('m-p', L.male + MALE_HEAD.x * S, F + MALE_HEAD.y * S, 4.2, s.ball.x, F - 10);
   tf('m-head', `translate(${MALE_HEAD.x} ${MALE_HEAD.y}) rotate(${n2(clamp(mdx * 0.012, -5, 5))})`);
-  const fdx = look('f-p', f.x, F + f.y + FEMALE_HEAD_Y * fk, 3, ly.x, F - 40 * S);
+  const fdx = look('f-p', f.x, F + f.y + FEMALE_HEAD_Y * fk, 3.8, ly.x, F - 40 * S);
   tf('f-head', `translate(0 ${FEMALE_HEAD_Y}) rotate(${n2(clamp(fdx * 0.03, -10, 10))})`);
-  look('l-p', ly.x + LYNX_HEAD.x * S * ly.face, F + ly.y + LYNX_HEAD.y * S, 2.4, s.ball.x, F - 12, ly.face);
-  look('d-p', L.shelf.x, L.shelf.y + DEV_HEAD_Y * S, 2.6, L.shelf.x, L.shelf.y + 60);
+  look('l-p', ly.x + LYNX_HEAD.x * S * ly.face, F + ly.y + LYNX_HEAD.y * S, 3, s.ball.x, F - 12, ly.face);
+  look('d-p', L.shelf.x, L.shelf.y + DEV_HEAD_Y * S, 3.2, L.shelf.x, L.shelf.y + 60);
 
   const ty = s.typing;
   if (ty.shown !== ty.chars || ty.shownIdx !== ty.idx) {
@@ -278,11 +278,11 @@ function hitTest(s: Sim, L: Layout, x: number, y: number): Who | null {
   const F = L.floor;
   if (Math.hypot(x - (L.male + MALE_BELL.x * S), y - (F + MALE_BELL.y * S)) < 15 * S) return 'bell';
   if (Math.hypot(x - s.ball.x, y - (F - 13 * S)) < 21 * S) return 'ball';
-  if (Math.abs(x - s.lynx.x) < 54 * S && y > F + s.lynx.y - 102 * S && y < F + 6) return 'lynx';
+  if (Math.abs(x - (s.lynx.x + 10 * S * s.lynx.face)) < 50 * S && y > F + s.lynx.y - 112 * S && y < F + 6) return 'lynx';
   const fk = S * FS;
-  if (Math.abs(x - s.female.x) < 58 * fk && y > F + s.female.y - 185 * fk && y < F + 6) return 'female';
-  if (x > L.male - 116 * S && x < L.male + 112 * S && y > F - 172 * S && y < F + 6) return 'male';
-  if (Math.abs(x - L.shelf.x) < 40 * S && y > L.shelf.y - 128 * S && y < L.shelf.y - 64 * S) return 'dev';
+  if (Math.abs(x - s.female.x) < 62 * fk && y > F + s.female.y - 168 * fk && y < F + 6) return 'female';
+  if (x > L.male - 92 * S && x < L.male + 108 * S && y > F - 182 * S && y < F + 6) return 'male';
+  if (Math.abs(x - L.shelf.x) < 44 * S && y > L.shelf.y - 140 * S && y < L.shelf.y - 66 * S) return 'dev';
   return null;
 }
 
@@ -410,8 +410,8 @@ export default function CatScene({ layout: L, className = '', onSecret, onIntera
     const spots: Record<typeof who, [number, number, string]> = {
       male: [L.male + MALE_HEAD.x * S, F + (MALE_HEAD.y - 80) * S, 'purrr'],
       female: [sim.female.x, F + sim.female.y + (FEMALE_HEAD_Y - 70) * S * FS, 'mrrp?'],
-      lynx: [sim.lynx.x + LYNX_HEAD.x * S * sim.lynx.face, F + sim.lynx.y + (LYNX_HEAD.y - 46) * S, 'mew!'],
-      dev: [L.shelf.x, L.shelf.y + (DEV_HEAD_Y - 52) * S, 'git push ✓'],
+      lynx: [sim.lynx.x + LYNX_HEAD.x * S * sim.lynx.face, F + sim.lynx.y + (LYNX_HEAD.y - 54) * S, 'mew!'],
+      dev: [L.shelf.x, L.shelf.y + (DEV_HEAD_Y - 62) * S, 'git push ✓'],
     };
     const [x, y, text] = spots[who];
     const id = ++popId.current;
