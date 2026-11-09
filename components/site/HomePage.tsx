@@ -9,7 +9,7 @@ import TechStack from './TechStack';
 import Organization from './Organization';
 import Achievements from './Achievements';
 import Contact from './Contact';
-import JourneyBanner from './JourneyBanner';
+import AgentRunBanner from './AgentRunBanner';
 import { SectionId } from '@/lib/site/types';
 
 const App = () => {
@@ -78,7 +78,7 @@ const App = () => {
           <Organization />
 
           {/* Bottom Row Area */}
-          <JourneyBanner />
+          <AgentRunBanner />
           <Achievements />
 
           <Projects />
