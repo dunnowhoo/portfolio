@@ -1,0 +1,91 @@
+/* Diimpor PALING ATAS supaya utilitas Tailwind (mis. text-[14px] pada ikon) menang, sama seperti urutan di situs lama */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght%2CFILL@100..700%2C0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+
+/* ---- Gaya kustom dari index.html lama (disalin apa adanya, sebelum utilities seperti urutan CDN) ---- */
+        body {
+            background-color: #f5f5f7; /* Apple Gray Background */
+            color: #1d1d1f;
+            min-height: 100vh;
+        }
+        
+        /* LIQUID GLASS MORPHISM STYLE */
+        .glass-card {
+            /* Translucent white base with gradient for light direction */
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.65) 100%);
+            
+            /* High blur for the material feel */
+            backdrop-filter: blur(25px) saturate(120%);
+            -webkit-backdrop-filter: blur(25px) saturate(120%);
+            
+            /* Border that catches light on top */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            
+            /* Complex shadows: Outer drop + Inner glow (inset) for volume */
+            box-shadow: 
+                0 10px 30px -5px rgba(0, 0, 0, 0.04),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.5); /* The liquid factor */
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+        }
+
+        .glass-card-strong {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 15px 35px -5px rgba(0, 0, 0, 0.06),
+                inset 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.05),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .bento-hover {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .bento-hover:hover {
+            transform: translateY(-6px) scale(1.01);
+            /* Stronger gloss on hover */
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 1);
+            z-index: 10;
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #d1d1d6, transparent);
+            z-index: 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            letter-spacing: -0.015em;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    
+@tailwind utilities;
