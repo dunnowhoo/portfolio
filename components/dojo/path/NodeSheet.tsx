@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { addResource, completeNode, getNodeDetail, logAttempt, removeResource, saveNote, startNode, type NodeDetail } from '@/app/actions/dojo';
 import { emitAward } from '@/components/dojo/AwardToaster';
 import Prose from '@/components/dojo/Prose';
+import QuizButton from '@/components/dojo/quiz/QuizButton';
 import { NODE_ICON, NODE_LABEL, type PathNode } from '@/lib/dojo/curriculum/types';
 import { RATING_LABEL, type Rating } from '@/lib/dojo/engine/srs';
 
@@ -296,7 +297,16 @@ export default function NodeSheet({ node, onClose, onChanged }: { node: PathNode
                   {node.quiz && (
                     <div className="rounded-2xl bg-white p-4 text-sm text-text-secondary">
                       <p className="font-medium text-text-main">Kuis bawaan</p>
-                      <p className="mt-1">Mainkan kuisnya dari halaman Hari ini, atau kerjakan latihannya sendiri lalu isi skor dan tandai selesai di bawah.</p>
+                      <p className="mt-1">
+                        {node.type === 'checkpoint' || node.type === 'boss'
+                          ? `Lulus kalau skor ≥ ${node.passPct ?? 80}%${node.timeLimitS ? ` dalam ${Math.round(node.timeLimitS / 60)} menit` : ''}. Node langsung selesai saat lulus.`
+                          : 'Node selesai otomatis setelah kuis; akurasi ≥ 90% memberi bonus +5 XP.'}
+                      </p>
+                      {(status !== 'locked' || skipTest) && !completed && (
+                        <div className="mt-3">
+                          <QuizButton source="node" id={node.id} label={skipTest ? 'Mulai tes lompat' : 'Mulai kuis'} onFinished={() => { void reload(); onChanged(); }} />
+                        </div>
+                      )}
                     </div>
                   )}
                   {node.checklist && (

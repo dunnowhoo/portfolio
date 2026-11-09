@@ -21,10 +21,11 @@ export default function AwardToaster() {
       const r = (e as CustomEvent<AwardResult>).detail;
       if (!r || r.duplicate) return;
       const next: Toast[] = [];
-      const base = r.xp - r.events.reduce((a, x) => a + x.xp, 0);
+      // XP lencana dicatat terpisah (tidak termasuk r.xp)
+      const base = r.xp - r.events.filter((x) => x.type !== 'badge').reduce((a, x) => a + x.xp, 0);
       if (base > 0) next.push({ id: ++id, text: `+${base} XP`, tone: 'xp' });
       for (const ev of r.events) {
-        next.push({ id: ++id, text: ev.xp ? `${ev.label} · +${ev.xp} XP` : ev.label, tone: ev.type === 'daily_goal' ? 'goal' : ev.type === 'streak_repair' ? 'repair' : 'streak' });
+        next.push({ id: ++id, text: ev.xp ? `${ev.label} · +${ev.xp} XP` : ev.label, tone: ev.type === 'daily_goal' || ev.type === 'badge' ? 'goal' : ev.type === 'streak_repair' ? 'repair' : 'streak' });
       }
       if (r.qualified && r.streak) next.push({ id: ++id, text: `🔥 Streak ${r.streak.track === 'jp' ? '日本語' : 'DSA'} aman · ${r.streak.current} hari`, tone: 'streak' });
       if (r.nitoryu) next.push({ id: ++id, text: `二刀流 · kedua streak aman (${r.nitoryu} hari)`, tone: 'streak' });

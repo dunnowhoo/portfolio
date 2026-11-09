@@ -7,6 +7,7 @@ import { customResource, materialRead, nodeProgress, note, problemProgress } fro
 import { NODES, computeStatuses, lockReason, skippedBy, type PathNode } from '@/lib/dojo/curriculum';
 import { getMaterial, loadGrammar, loadKanji, sliceMarkdown, type GrammarPoint, type Kanji } from '@/lib/dojo/content';
 import { mdToHtml } from '@/lib/dojo/markdown';
+import { badgeEvents } from '@/lib/dojo/badges';
 import { award, awardBatch, dojoToday, getProfile, type AwardResult } from '@/lib/dojo/engine/core';
 import { schedule, type Rating } from '@/lib/dojo/engine/srs';
 import { guard, safeHttpUrl, youtubeId } from '@/lib/dojo/guard';
@@ -214,6 +215,7 @@ export async function completeNode(raw: z.input<typeof CompleteInput>): Promise<
       skipped = list.length;
     }
   }
+  result.events.push(...(await badgeEvents(p.timezone)));
   return { ok: true, result, skipped };
 }
 

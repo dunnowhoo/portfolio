@@ -1,23 +1,18 @@
-import "server-only";
-import { and, eq, sql } from "drizzle-orm";
-import { getDb } from "@/db/client";
-import {
-  activityEvent,
-  busyDay,
-  dailyStat,
-  profile,
-  streakState,
-} from "@/db/schema";
-import { levelFromXp } from "@/lib/dojo/level";
-import { localDate, localHour } from "@/lib/dojo/time";
-import { addDays, daysBetween } from "./srs";
+import 'server-only';
+import { cache } from 'react';
+import { and, eq, sql } from 'drizzle-orm';
+import { getDb } from '@/db/client';
+import { activityEvent, busyDay, dailyStat, profile, streakState } from '@/db/schema';
+import { levelFromXp } from '@/lib/dojo/level';
+import { localDate, localHour } from '@/lib/dojo/time';
+import { addDays, daysBetween } from './srs';
 
 // Mesin XP + streak (docs/dojo/04-GAMIFICATION.md §2–4). Semua aktivitas = event append-only.
 
-export type TrackKey = "jp" | "dsa";
-export type AnyTrack = TrackKey | "general";
+export type TrackKey = 'jp' | 'dsa';
+export type AnyTrack = TrackKey | 'general';
 type Db = ReturnType<typeof getDb>;
-type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
+type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
 type Profile = typeof profile.$inferSelect;
 
 export const STREAK_MILESTONES: [number, number][] = [
@@ -35,37 +30,26 @@ export const STREAK_MILESTONES: [number, number][] = [
 // ---------- waktu ----------
 function tzOffsetMinutes(tz: string, at: Date): number {
   const name =
-    new Intl.DateTimeFormat("en-US", {
+    new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
-      timeZoneName: "longOffset",
+      timeZoneName: 'longOffset',
     })
       .formatToParts(at)
-      .find((p) => p.type === "timeZoneName")?.value ?? "GMT";
+      .find((p) => p.type === 'timeZoneName')?.value ?? 'GMT';
   const m = name.match(/GMT([+-])(\d{2}):?(\d{2})?/);
   if (!m) return 0;
-  return (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3] ?? 0));
+  return (m[1] === '-' ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3] ?? 0));
 }
 
-export function dojoToday(
-  p: Pick<Profile, "timezone" | "dayStartHour">,
-  now = new Date(),
-): string {
-  return localDate(
-    new Date(now.getTime() - p.dayStartHour * 3_600_000),
-    p.timezone,
-  );
+export function dojoToday(p: Pick<Profile, 'timezone' | 'dayStartHour'>, now = new Date()): string {
+  return localDate(new Date(now.getTime() - p.dayStartHour * 3_600_000), p.timezone);
 }
 
 // Akhir "hari Dōjō" (memperhitungkan jam pergantian hari) sebagai Date
-export function dayEnd(
-  date: string,
-  p: Pick<Profile, "timezone" | "dayStartHour">,
-): Date {
-  const hh = String(p.dayStartHour).padStart(2, "0");
+export function dayEnd(date: string, p: Pick<Profile, 'timezone' | 'dayStartHour'>): Date {
+  const hh = String(p.dayStartHour).padStart(2, '0');
   const naive = Date.parse(`${addDays(date, 1)}T${hh}:00:00Z`);
-  return new Date(
-    naive - tzOffsetMinutes(p.timezone, new Date(naive)) * 60_000 - 1000,
-  );
+  return new Date(naive - tzOffsetMinutes(p.timezone, new Date(naive)) * 60_000 - 1000);
 }
 
 export async function getProfile(db: Db | Tx = getDb()): Promise<Profile> {
@@ -78,20 +62,10 @@ export async function getProfile(db: Db | Tx = getDb()): Promise<Profile> {
 
 // ---------- streak ----------
 async function streakRow(tx: Tx, track: string) {
-  const [row] = await tx
-    .select()
-    .from(streakState)
-    .where(eq(streakState.track, track));
+  const [row] = await tx.select().from(streakState).where(eq(streakState.track, track));
   if (row) return row;
-  const [ins] = await tx
-    .insert(streakState)
-    .values({ track })
-    .onConflictDoNothing()
-    .returning();
-  return (
-    ins ??
-    (await tx.select().from(streakState).where(eq(streakState.track, track)))[0]
-  );
+  const [ins] = await tx.insert(streakState).values({ track }).onConflictDoNothing().returning();
+  return ins ?? (await tx.select().from(streakState).where(eq(streakState.track, track)))[0];
 }
 
 async function statRow(tx: Tx, date: string, track: string) {
@@ -103,22 +77,17 @@ async function statRow(tx: Tx, date: string, track: string) {
 }
 
 // Terapkan pergantian hari secara malas: freeze otomatis, status retak, atau putus.
-export async function syncStreaks(
-  tx: Tx,
-  p: Profile,
-  today: string,
-  now = new Date(),
-) {
+export async function syncStreaks(tx: Tx, p: Profile, today: string, now = new Date()) {
   const yesterday = addDays(today, -1);
   let rows = await tx.select().from(streakState);
   if (rows.length < 3) {
     await tx
       .insert(streakState)
-      .values([{ track: "jp" }, { track: "dsa" }, { track: "both" }])
+      .values([{ track: 'jp' }, { track: 'dsa' }, { track: 'both' }])
       .onConflictDoNothing();
     rows = await tx.select().from(streakState);
   }
-  for (const track of ["jp", "dsa"] as const) {
+  for (const track of ['jp', 'dsa'] as const) {
     const st = rows.find((r) => r.track === track)!;
     let { current, freezes, lastQualifiedDate, repairDeadline } = st;
     let changed = false;
@@ -133,12 +102,7 @@ export async function syncStreaks(
       changed = true;
     }
 
-    if (
-      !repairDeadline &&
-      current > 0 &&
-      lastQualifiedDate &&
-      lastQualifiedDate < yesterday
-    ) {
+    if (!repairDeadline && current > 0 && lastQualifiedDate && lastQualifiedDate < yesterday) {
       let end = lastQualifiedDate;
       while (end < yesterday && freezes > 0) {
         end = addDays(end, 1);
@@ -153,8 +117,7 @@ export async function syncStreaks(
       }
       if (end < yesterday) {
         const uncovered = daysBetween(end, yesterday);
-        const repairOk =
-          !st.lastRepairDate || daysBetween(st.lastRepairDate, today) >= 30;
+        const repairOk = !st.lastRepairDate || daysBetween(st.lastRepairDate, today) >= 30;
         if (uncovered === 1 && repairOk) repairDeadline = dayEnd(today, p);
         else current = 0;
       }
@@ -175,16 +138,9 @@ export async function syncStreaks(
         .where(eq(streakState.track, track));
     }
   }
-  const both = rows.find((r) => r.track === "both")!;
-  if (
-    both.current > 0 &&
-    both.lastQualifiedDate &&
-    both.lastQualifiedDate < yesterday
-  ) {
-    await tx
-      .update(streakState)
-      .set({ current: 0, updatedAt: new Date() })
-      .where(eq(streakState.track, "both"));
+  const both = rows.find((r) => r.track === 'both')!;
+  if (both.current > 0 && both.lastQualifiedDate && both.lastQualifiedDate < yesterday) {
+    await tx.update(streakState).set({ current: 0, updatedAt: new Date() }).where(eq(streakState.track, 'both'));
   }
 }
 
@@ -205,9 +161,7 @@ export type AwardInput = {
   minutes?: number;
   payload?: Record<string, unknown>;
   dedupeKey?: string;
-  counters?: Partial<
-    Record<"nodes" | "problems" | "reviews" | "quizzes", number>
-  >;
+  counters?: Partial<Record<'nodes' | 'problems' | 'reviews' | 'quizzes', number>>;
 };
 
 export type AwardEvent = { type: string; xp: number; label: string };
@@ -226,9 +180,9 @@ export type AwardResult = {
 };
 
 const LABELS: Record<string, string> = {
-  daily_goal: "Daily goal tercapai",
-  streak_milestone: "Milestone streak",
-  streak_repair: "Streak dipulihkan 七転び八起き",
+  daily_goal: 'Daily goal tercapai',
+  streak_milestone: 'Milestone streak',
+  streak_repair: 'Streak dipulihkan 七転び八起き',
 };
 
 async function applyEvent(tx: Tx, today: string, e: AwardInput) {
@@ -282,15 +236,10 @@ async function applyEvent(tx: Tx, today: string, e: AwardInput) {
 
 type Stat = typeof dailyStat.$inferSelect;
 
-async function advanceStreak(
-  tx: Tx,
-  track: string,
-  today: string,
-): Promise<number> {
+async function advanceStreak(tx: Tx, track: string, today: string): Promise<number> {
   const st = await streakRow(tx, track);
   if (st.lastQualifiedDate === today) return st.current;
-  const current =
-    st.lastQualifiedDate === addDays(today, -1) ? st.current + 1 : 1;
+  const current = st.lastQualifiedDate === addDays(today, -1) ? st.current + 1 : 1;
   await tx
     .update(streakState)
     .set({
@@ -303,16 +252,8 @@ async function advanceStreak(
   return current;
 }
 
-async function afterTrackXp(
-  tx: Tx,
-  p: Profile,
-  today: string,
-  now: Date,
-  track: TrackKey,
-  stat: Stat,
-  res: AwardResult,
-) {
-  const goal = track === "jp" ? p.dailyGoalJp : p.dailyGoalDsa;
+async function afterTrackXp(tx: Tx, p: Profile, today: string, now: Date, track: TrackKey, stat: Stat, res: AwardResult) {
+  const goal = track === 'jp' ? p.dailyGoalJp : p.dailyGoalDsa;
   const [busy] = await tx
     .select()
     .from(busyDay)
@@ -327,14 +268,14 @@ async function afterTrackXp(
       .where(and(eq(dailyStat.localDate, today), eq(dailyStat.track, track)));
     const bonus = await applyEvent(tx, today, {
       track,
-      type: "daily_goal",
+      type: 'daily_goal',
       xp: 10,
       dedupeKey: `goal:${today}:${track}`,
     });
     if (bonus) {
       res.xp += 10;
       xpToday += 10;
-      res.events.push({ type: "daily_goal", xp: 10, label: LABELS.daily_goal });
+      res.events.push({ type: 'daily_goal', xp: 10, label: LABELS.daily_goal });
       res.goalMet = track;
     }
   }
@@ -355,7 +296,7 @@ async function afterTrackXp(
         if (current !== n) continue;
         const b = await applyEvent(tx, today, {
           track,
-          type: "streak_milestone",
+          type: 'streak_milestone',
           refId: String(n),
           xp: bonusXp,
           dedupeKey: `streak:${track}:${n}:${today}`,
@@ -363,7 +304,7 @@ async function afterTrackXp(
         if (b) {
           res.xp += bonusXp;
           res.events.push({
-            type: "streak_milestone",
+            type: 'streak_milestone',
             xp: bonusXp,
             label: `Streak ${n} hari`,
           });
@@ -371,8 +312,8 @@ async function afterTrackXp(
       }
     }
     // 二刀流: kedua jalur aman di tanggal yang sama
-    const other = await statRow(tx, today, track === "jp" ? "dsa" : "jp");
-    if (other?.qualified) res.nitoryu = await advanceStreak(tx, "both", today);
+    const other = await statRow(tx, today, track === 'jp' ? 'dsa' : 'jp');
+    if (other?.qualified) res.nitoryu = await advanceStreak(tx, 'both', today);
   }
 
   // Repair: capai 2× daily goal di hari setelah bolong
@@ -399,12 +340,12 @@ async function afterTrackXp(
       });
     await applyEvent(tx, today, {
       track,
-      type: "streak_repair",
+      type: 'streak_repair',
       xp: 0,
       dedupeKey: `repair:${track}:${today}`,
     });
     res.events.push({
-      type: "streak_repair",
+      type: 'streak_repair',
       xp: 0,
       label: LABELS.streak_repair,
     });
@@ -434,26 +375,18 @@ export async function award(input: AwardInput): Promise<AwardResult> {
     if (!stat) return { ...res, duplicate: true };
     res.xp += input.xp;
 
-    if (input.track === "jp" || input.track === "dsa")
-      await afterTrackXp(tx, p, today, now, input.track, stat, res);
+    if (input.track === 'jp' || input.track === 'dsa') await afterTrackXp(tx, p, today, now, input.track, stat, res);
 
-    const [after] = await tx
-      .select({ totalXp: profile.totalXp })
-      .from(profile)
-      .where(eq(profile.id, 1));
+    const [after] = await tx.select({ totalXp: profile.totalXp }).from(profile).where(eq(profile.id, 1));
     const level = levelFromXp(after.totalXp).level;
-    if (level !== p.level)
-      await tx.update(profile).set({ level }).where(eq(profile.id, 1));
+    if (level !== p.level) await tx.update(profile).set({ level }).where(eq(profile.id, 1));
     return { ...res, totalXp: after.totalXp, level };
   });
 }
 
 // Banyak event satu jalur dalam satu transaksi (mis. node yang dilewati tes lompat).
 // Dedupe tetap per event; hanya yang benar-benar baru yang dihitung.
-export async function awardBatch(
-  track: TrackKey,
-  items: { type: string; refId: string; xp: number; dedupeKey: string }[],
-): Promise<AwardResult> {
+export async function awardBatch(track: TrackKey, items: { type: string; refId: string; xp: number; dedupeKey: string }[]): Promise<AwardResult> {
   const db = getDb();
   return db.transaction(async (tx) => {
     const now = new Date();
@@ -504,19 +437,15 @@ export async function awardBatch(
         .where(eq(profile.id, 1));
     res.xp = sum;
     await afterTrackXp(tx, p, today, now, track, stat, res);
-    const [after] = await tx
-      .select({ totalXp: profile.totalXp })
-      .from(profile)
-      .where(eq(profile.id, 1));
+    const [after] = await tx.select({ totalXp: profile.totalXp }).from(profile).where(eq(profile.id, 1));
     const level = levelFromXp(after.totalXp).level;
-    if (level !== p.level)
-      await tx.update(profile).set({ level }).where(eq(profile.id, 1));
+    if (level !== p.level) await tx.update(profile).set({ level }).where(eq(profile.id, 1));
     return { ...res, totalXp: after.totalXp, level };
   });
 }
 
 // ---------- tampilan ----------
-export type StreakStatus = "aman" | "belum" | "berisiko" | "retak" | "sibuk";
+export type StreakStatus = 'aman' | 'belum' | 'berisiko' | 'retak' | 'sibuk';
 export type StreakView = {
   track: TrackKey;
   current: number;
@@ -540,42 +469,26 @@ export async function getTodayState() {
     const today = dojoToday(p, now);
     await syncStreaks(tx, p, today, now);
     const end = dayEnd(today, p);
-    const minutesLeft = Math.max(
-      0,
-      Math.round((end.getTime() - now.getTime()) / 60_000),
-    );
+    const minutesLeft = Math.max(0, Math.round((end.getTime() - now.getTime()) / 60_000));
     const hour = localHour(now, p.timezone);
-    const rows = await tx
-      .select()
-      .from(dailyStat)
-      .where(eq(dailyStat.localDate, today));
+    const rows = await tx.select().from(dailyStat).where(eq(dailyStat.localDate, today));
     const yRows = await tx
       .select()
       .from(dailyStat)
       .where(eq(dailyStat.localDate, addDays(today, -1)));
-    const busy = await tx
-      .select()
-      .from(busyDay)
-      .where(eq(busyDay.localDate, today));
-    const streaks: Record<TrackKey, StreakView> = {} as Record<
-      TrackKey,
-      StreakView
-    >;
-    for (const track of ["jp", "dsa"] as const) {
+    const busy = await tx.select().from(busyDay).where(eq(busyDay.localDate, today));
+    const streaks: Record<TrackKey, StreakView> = {} as Record<TrackKey, StreakView>;
+    for (const track of ['jp', 'dsa'] as const) {
       const st = await streakRow(tx, track);
       const row = rows.find((r) => r.track === track);
       const isBusy = busy.some((b) => b.track === track);
-      const goal = track === "jp" ? p.dailyGoalJp : p.dailyGoalDsa;
+      const goal = track === 'jp' ? p.dailyGoalJp : p.dailyGoalDsa;
       const threshold = isBusy ? 5 : p.streakMinXp;
       const xp = row?.xp ?? 0;
       const retak = !!st.repairDeadline && now <= st.repairDeadline;
-      let status: StreakStatus = row?.qualified
-        ? "aman"
-        : hour >= 18
-          ? "berisiko"
-          : "belum";
-      if (retak) status = "retak";
-      else if (isBusy && !row?.qualified) status = "sibuk";
+      let status: StreakStatus = row?.qualified ? 'aman' : hour >= 18 ? 'berisiko' : 'belum';
+      if (retak) status = 'retak';
+      else if (isBusy && !row?.qualified) status = 'sibuk';
       streaks[track] = {
         track,
         current: st.current,
@@ -591,7 +504,7 @@ export async function getTodayState() {
         repairTarget: retak ? goal * 2 : undefined,
       };
     }
-    const both = await streakRow(tx, "both");
+    const both = await streakRow(tx, 'both');
     const lv = levelFromXp(p.totalXp);
     return {
       profile: p,
@@ -600,7 +513,10 @@ export async function getTodayState() {
       streaks,
       nitoryu: both.current,
       level: lv,
-      generalXp: rows.find((r) => r.track === "general")?.xp ?? 0,
+      generalXp: rows.find((r) => r.track === 'general')?.xp ?? 0,
     };
   });
 }
+
+// Satu kali per request (layout + page memakai data yang sama)
+export const getTodayStateCached = cache(getTodayState);

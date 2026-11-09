@@ -1,12 +1,12 @@
 import { CURRICULUM, computePace, computeStatuses, nextNode, type Track } from '@/lib/dojo/curriculum';
-import { getTodayState } from '@/lib/dojo/engine/core';
+import { getTodayStateCached } from '@/lib/dojo/engine/core';
 import { beltFor } from '@/lib/dojo/level';
 import { loadProblemMastery, loadProgress } from '@/lib/dojo/progress';
 import PathMap from './PathMap';
 
 // Server component: hanya dipakai oleh page yang sudah memanggil requireDojo().
-export default async function PathPage({ track }: { track: Track }) {
-  const [progress, state, probs] = await Promise.all([loadProgress(track), getTodayState(), track === 'dsa' ? loadProblemMastery() : Promise.resolve(null)]);
+export default async function PathPage({ track, initialNode }: { track: Track; initialNode?: string }) {
+  const [progress, state, probs] = await Promise.all([loadProgress(track), getTodayStateCached(), track === 'dsa' ? loadProblemMastery() : Promise.resolve(null)]);
   const statuses = computeStatuses(track, progress);
   const today = state.today;
   const pace = computePace(track, progress, today);
@@ -35,6 +35,7 @@ export default async function PathPage({ track }: { track: Track }) {
       pace={pace}
       nextId={next?.id}
       today={today}
+      initialNode={initialNode}
       side={{
         streak: { current: s.current, freezes: s.freezes, status: s.status, todayXp: s.todayXp, goal: s.goal, threshold: s.threshold, minutesLeft: s.minutesLeft, repairTarget: s.repairTarget },
         level: { level: state.level.level, intoLevel: state.level.intoLevel, span: state.level.span },

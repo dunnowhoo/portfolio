@@ -22,6 +22,7 @@ type Props = {
   nextId?: string;
   today: string;
   side: PathSide;
+  initialNode?: string;
 };
 
 const OFFSETS = [0, 44, 72, 44, 0, -44, -72, -44];
@@ -124,12 +125,12 @@ function NodeButton({ node, status, stars, due, isNext, color, soft, onOpen, nex
   );
 }
 
-export default function PathMap({ track, sections, statuses, mastery, dueIds, pace, nextId, today, side }: Props) {
+export default function PathMap({ track, sections, statuses, mastery, dueIds, pace, nextId, today, side, initialNode }: Props) {
   const router = useRouter();
   const color = TRACK_COLOR[track];
   const soft = SOFT[track];
   const due = useMemo(() => new Set(dueIds), [dueIds]);
-  const [open, setOpen] = useState<PathNode | null>(null);
+  const [open, setOpen] = useState<PathNode | null>(() => (initialNode ? (sections.flatMap((s) => s.units.flatMap((u) => u.nodes)).find((n) => n.id === initialNode) ?? null) : null));
   const nextRef = useRef<HTMLButtonElement>(null);
   const [nextVisible, setNextVisible] = useState(true);
   const units = useMemo(() => sections.flatMap((s) => s.units), [sections]);

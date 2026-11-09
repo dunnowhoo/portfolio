@@ -336,3 +336,14 @@ Perubahan dari rencana awal di atas:
 - **Materi** dirender dari Markdown ke HTML di server (unified + GFM + highlight), lalu disisipkan di klien; isinya file milik sendiri. Catatan pengguna tetap teks biasa. `outputFileTracingIncludes` memastikan `content/dojo/**` ikut ke fungsi Vercel.
 - **Video:** kurikulum hanya menyimpan kata kunci pencarian, bukan ID video yang ditebak. Node video menampilkan tombol "Cari di YouTube" dan form tempel link; link YouTube yang ditempel diputar lewat `youtube-nocookie.com`.
 - **Tes:** E2E berjalan di branch Neon `e2e` (salinan copy-on-write dari `production`), jadi tes yang menyelesaikan node tidak pernah mengubah XP atau streak asli. Branch itu bisa di-reset dari production kapan saja (`neon branches reset e2e --parent`).
+
+## 18. Catatan implementasi M3 (10 November 2026)
+
+- **Kuis bawaan** (`lib/dojo/quiz/`): sprint kana (dari tabel gojūon, katakana diturunkan lewat offset Unicode), kanji N5 dan grammar N5/N4/N3 (di-parse dari tabel materi MD), Tebak Pola DSA, dan kuis Big-O. Soal dibangun di server dengan PRNG ber-seed; set harian memakai seed `tanggal + jalur`, jadi sama di semua perangkat. Setiap jawaban memperbarui kartu SRS (`card`): benar = Baik, salah = Lupa.
+- **XP kuis** mengikuti tabel: sprint/recall 10 (+5 kalau ≥ 90%) maks 6 sesi/hari, Tebak Pola 10 maks 3 sesi/hari, review kartu 1 XP per kartu benar maks 30/hari. Kuis dari node jalur menyelesaikan node itu; checkpoint lulus kalau skor ≥ ambang dan dalam batas waktu.
+- **Hari ini** (`lib/dojo/daily.ts`): item disimpan di `daily_set`; status item berbasis node/review dihitung dari data, bukan disimpan. Reroll 1× per hari tidak mengganti review atau item yang sudah selesai. Quest (3 per hari, tidak mengulang quest kemarin) dan Perfect day dievaluasi saat halaman dibuka dan setelah aksi.
+- **Target** (`lib/dojo/goals.ts`): template per fase kurikulum dibuat malas saat periode dibuka; progres selalu dihitung ulang dari event, jadi target yang angkanya diubah langsung terhitung benar. Hadiah memakai dedupe key per minggu/bulan.
+- **Lencana** (`lib/dojo/badges.ts`): ±60 lencana (termasuk Topic Master per topik) dievaluasi dari data setelah aksi utama dan saat Beranda/Profil dibuka; XP lencana diberikan sekali.
+- **Kalender:** status sesi JLPT menyelesaikan node WAR/ujian dan memberi XP lulus (+1.000) serta mata kanan Daruma. `.ics` dibangun di server dengan VALARM; URL langganan memakai token HMAC dari `AUTH_SECRET` (ganti `AUTH_SECRET` = URL lama tidak berlaku).
+- **Pengaturan:** mode sibuk hanya untuk hari yang belum dimulai (maks 3/bulan/jalur); ekspor JSON seluruh tabel kecuali sesi dan percobaan login.
+- **Tidak dibuat:** pengingat email (Resend) dan cron harian, sesuai keputusan "pengingat lewat email jangan dulu". Pengingat muncul sebagai banner WAR, daftar pengingat, dan alarm `.ics`. Streak, quest, dan target dihitung malas sehingga tidak butuh cron.

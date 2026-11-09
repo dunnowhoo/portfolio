@@ -1,11 +1,17 @@
-import { asc, eq } from 'drizzle-orm';
+import { asc, desc, eq } from 'drizzle-orm';
 import Link from 'next/link';
 import { getDb } from '@/db/client';
-import { countdown, daruma, jlptSession } from '@/db/schema';
+import { badgeAward, countdown, daruma, jlptSession } from '@/db/schema';
 import DarumaIcon from '@/components/dojo/DarumaIcon';
+import Heatmap from '@/components/dojo/Heatmap';
+import { BADGES, evaluateBadges } from '@/lib/dojo/badges';
+import { warState } from '@/lib/dojo/calendar';
+import { getDailySets, getQuests } from '@/lib/dojo/daily';
+import { getGoals } from '@/lib/dojo/goals';
+import { heatmapData } from '@/lib/dojo/stats';
 import { computePace, computeStatuses, nextNode, type Track } from '@/lib/dojo/curriculum';
 import { requireDojo } from '@/lib/dojo/dal';
-import { getTodayState, type StreakView } from '@/lib/dojo/engine/core';
+import { getTodayStateCached, type StreakView } from '@/lib/dojo/engine/core';
 import { beltFor } from '@/lib/dojo/level';
 import { loadProgress } from '@/lib/dojo/progress';
 import { daysUntil, greeting, longDateId, shortDateId } from '@/lib/dojo/time';
@@ -30,8 +36,14 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
   const { gate } = await params;
   await requireDojo(gate);
   const db = getDb();
-  const [state, darumas, sessions, [misumi], progJp, progDsa] = await Promise.all([
-    getTodayState(),
+  const state = await getTodayStateCached();
+  await evaluateBadges(state.profile.timezone);
+  const daily = await getDailySets();
+  const [quests, goals, heat, recent, darumas, sessions, [misumi], progJp, progDsa] = await Promise.all([
+    getQuests(daily.perfect),
+    getGoals(),
+    heatmapData(Number(state.today.slice(0, 4))),
+    db.select().from(badgeAward).orderBy(desc(badgeAward.awardedAt)).limit(4),
     db.select().from(daruma).orderBy(asc(daruma.dueDate)),
     db.select().from(jlptSession).orderBy(asc(jlptSession.examDate)),
     db.select().from(countdown).where(eq(countdown.slug, 'misumi-day1')).limit(1),
@@ -51,12 +63,29 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
     return { ...t, streak: state.streaks[t.key], next: nextNode(t.key, statuses), pace: computePace(t.key, progress[t.key], today) };
   });
   const nextJlpt = sessions.find((s) => s.examDate >= today);
+  const war = warState(sessions, now);
+  const items = [...daily.sets.jp.items, ...daily.sets.dsa.items];
+  const weekGoals = goals.week.goals;
   const misumiAt = misumi?.targetAt ?? new Date('2028-10-01T09:00:00+09:00');
   const misumiDays = daysUntil(misumiAt, tz, now);
   const misumiPct = Math.min(100, Math.max(0, ((now.getTime() - OFFER_SIGNED.getTime()) / (misumiAt.getTime() - OFFER_SIGNED.getTime())) * 100));
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6 lg:grid-cols-6">
+      {war && (
+        <Link href={`/${gate}/kalender`} className="flex flex-wrap items-center gap-3 rounded-3xl border border-[#f5c2be] bg-[#fdecea] px-6 py-4 md:col-span-4 lg:col-span-6">
+          <span className="text-2xl" aria-hidden="true">🎌</span>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-[#a3271f]">
+              WAR JLPT {war.session.levelPlanned}: pendaftaran {war.phase === 'open' ? 'SEDANG BUKA' : `buka ${shortDateId(war.opensAt, tz)}`}
+              {war.session.isEstimate ? ' (perkiraan)' : ''}
+            </p>
+            <p className="text-[13px] text-[#a3271f]/80">Cek checklist war, lalu daftar di jlptonline.or.id. Ubah status jadi &quot;Terdaftar&quot; setelah berhasil.</p>
+          </div>
+          <span className="rounded-full bg-[#e8453c] px-4 py-2 text-sm font-semibold text-white">Buka checklist</span>
+        </Link>
+      )}
+
       {/* Sapaan + level */}
       <section className="glass-card flex flex-col gap-5 rounded-3xl p-6 md:col-span-4 md:p-8 lg:col-span-4">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">{longDateId(now, tz)}</p>
@@ -172,6 +201,51 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
         </p>
       </section>
 
+      {/* Hari ini */}
+      <section className="glass-card flex flex-col gap-3 rounded-3xl p-6 md:col-span-2 lg:col-span-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-text-main">Hari ini</h2>
+          <Link href={`/${gate}/hari-ini`} className="text-[13px] font-medium text-[#0066cc]">
+            {items.filter((i) => i.done).length}/{items.length} item →
+          </Link>
+        </div>
+        <ul className="space-y-2">
+          {quests.map((q) => (
+            <li key={q.id} className="flex items-center gap-2 text-[14px]">
+              <span className={`material-symbols-outlined text-[20px] ${q.completed ? 'text-[#34c759]' : 'text-[#c7c7cc]'}`}>{q.completed ? 'check_circle' : 'radio_button_unchecked'}</span>
+              <span className={q.completed ? 'text-text-secondary' : 'text-text-main'}>{q.title}</span>
+              <span className="ml-auto text-[12px] font-semibold text-[#8a6100]">+{q.xp}</span>
+            </li>
+          ))}
+        </ul>
+        {daily.perfect && <p className="text-[13px] font-semibold text-[#1f7a3a]">Perfect day ✓</p>}
+      </section>
+
+      {/* Target minggu ini */}
+      <section className="glass-card flex flex-col gap-3 rounded-3xl p-6 md:col-span-2 lg:col-span-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-text-main">Target minggu ini</h2>
+          <Link href={`/${gate}/target`} className="text-[13px] font-medium text-[#0066cc]">
+            {weekGoals.filter((g) => g.done).length}/{weekGoals.length} →
+          </Link>
+        </div>
+        <ul className="space-y-2">
+          {weekGoals.slice(0, 6).map((g) => (
+            <li key={g.id} className="flex items-center gap-2 text-[13px]">
+              <span className="w-12 font-jp text-[12px]" style={{ color: g.track === 'jp' ? '#e8453c' : '#0066cc' }}>{g.track === 'jp' ? '日本語' : 'DSA'}</span>
+              <span className={`min-w-0 flex-1 truncate ${g.done ? 'text-text-secondary line-through' : 'text-text-main'}`}>{g.title}</span>
+              <span className="tabular-nums text-text-secondary">{g.metric === 'manual' ? (g.done ? '✓' : '—') : `${g.progress}/${g.target}`}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Heatmap */}
+      <section className="glass-card rounded-3xl p-6 md:col-span-4 lg:col-span-6">
+        <h2 className="mb-3 text-lg font-bold text-text-main">Heatmap</h2>
+        <Heatmap year={Number(today.slice(0, 4))} data={heat.data} />
+      </section>
+
       {/* Pace */}
       <section className="glass-card flex flex-col gap-3 rounded-3xl p-6 md:col-span-4 lg:col-span-3">
         <h2 className="text-lg font-bold text-text-main">Pace</h2>
@@ -190,6 +264,27 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
         </ul>
         {tracks.some((t) => t.pace.plan) && <p className="text-xs text-text-secondary">{tracks.map((t) => t.pace.plan && `${t.label}: ${t.pace.plan}`).filter(Boolean).join(' ')}</p>}
       </section>
+
+      {/* Lencana terbaru */}
+      {recent.length > 0 && (
+        <section className="glass-card flex flex-col gap-3 rounded-3xl p-6 md:col-span-4 lg:col-span-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-text-main">Lencana terbaru</h2>
+            <Link href={`/${gate}/profil`} className="text-[13px] font-medium text-[#0066cc]">Semua →</Link>
+          </div>
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {recent.map((b) => {
+              const def = BADGES.find((x) => x.id === b.badgeId);
+              return (
+                <li key={b.badgeId} className="rounded-2xl border border-[#ffd76a] bg-[#fffaf0] p-3">
+                  <p className="font-jp text-[14px] font-semibold text-text-main">🏅 {def?.name ?? b.badgeId}</p>
+                  <p className="text-[11px] text-text-secondary">{def?.hint}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {/* Rak Daruma */}
       <section className="glass-card flex flex-col gap-4 rounded-3xl p-6 md:col-span-4 lg:col-span-3">
