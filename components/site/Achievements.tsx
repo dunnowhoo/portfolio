@@ -1,7 +1,7 @@
 import React from 'react';
-import { ACHIEVEMENTS } from '@/lib/site/constants';
+import type { SiteContent } from '@/lib/site/content';
 
-const Achievements = () => {
+const Achievements = ({ items }: { items: SiteContent['achievements'] }) => {
   return (
     <div className="glass-card bento-hover rounded-3xl md:col-span-2 lg:col-span-2 row-span-1 p-5 flex flex-col overflow-hidden relative">
        
@@ -13,7 +13,7 @@ const Achievements = () => {
        </div>
        
        <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar flex-1 pr-1 relative z-10">
-          {ACHIEVEMENTS.map(ach => (
+          {items.map(ach => (
               <div key={ach.id} className="flex items-start gap-3 p-2 rounded-xl bg-white/40 border border-gray-100 hover:bg-white hover:shadow-md transition-all duration-300 group shrink-0">
                   <div className="mt-0.5 w-6 h-6 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm shrink-0 border border-gray-100 group-hover:text-[#0066cc] transition-colors">
                       <span className="material-symbols-outlined text-[14px]">{ach.icon}</span>

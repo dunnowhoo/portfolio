@@ -11,8 +11,9 @@ import Achievements from './Achievements';
 import Contact from './Contact';
 import CatBanner from './CatBanner';
 import { SectionId } from '@/lib/site/types';
+import type { SiteContent } from '@/lib/site/content';
 
-const App = () => {
+const App = ({ content }: { content: SiteContent }) => {
   const [activeSection, setActiveSection] = useState<SectionId>('home');
 
   useEffect(() => {
@@ -68,21 +69,21 @@ const App = () => {
         {/* Compact row height (120px) and dense flow for Tetris-like packing */}
         {/* Mobile: 1 col, Tablet: 4 cols, Desktop: 6 cols */}
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 auto-rows-[minmax(auto,auto)] md:auto-rows-[minmax(120px,auto)] grid-flow-dense">
-          <Hero scrollTo={scrollTo} />
+          <Hero scrollTo={scrollTo} profile={content.profile} socials={content.socials} education={content.education} />
 
           {/* Left Column Area */}
-          <Experience />
+          <Experience items={content.experience} />
 
           {/* Right Column Stack */}
-          <TechStack />
-          <Organization />
+          <TechStack items={content.techstack} />
+          <Organization items={content.organization} />
 
           {/* Bottom Row Area */}
           <CatBanner />
-          <Achievements />
+          <Achievements items={content.achievements} />
 
-          <Projects />
-          <Contact />
+          <Projects items={content.projects} />
+          <Contact contact={content.contact} />
         </div>
       </main>
 

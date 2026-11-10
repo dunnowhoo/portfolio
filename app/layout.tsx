@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.fauzansanjaya.dev'),
   title: 'Fauzan Sanjaya | AI Solutions Engineer & Mobile Fullstack Developer',
   description:
     'Portfolio of Fauzan Putra Sanjaya, an AI Solutions Engineer and Mobile Fullstack Developer building LLM agents, RAG pipelines, and scalable mobile & web systems.',
