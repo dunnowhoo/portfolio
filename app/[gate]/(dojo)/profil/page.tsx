@@ -6,7 +6,9 @@ import Heatmap from '@/components/dojo/Heatmap';
 import { BADGES, evaluateBadges } from '@/lib/dojo/badges';
 import { requireDojo } from '@/lib/dojo/dal';
 import { getTodayStateCached } from '@/lib/dojo/engine/core';
-import { beltFor } from '@/lib/dojo/level';
+import { BELTS, beltFor } from '@/lib/dojo/level';
+import { DARU_GEAR, daruTier, nextGear } from '@/lib/dojo/daru';
+import DaruAvatar from '@/components/dojo/DaruAvatar';
 import { loadProgress } from '@/lib/dojo/progress';
 import { heatmapData, profileStats, weeklyXp } from '@/lib/dojo/stats';
 
@@ -32,6 +34,8 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
   const stats = await profileStats({ jp: progJp, dsa: progDsa });
   const lv = state.level;
   const belt = beltFor(lv.level);
+  const tier = daruTier(lv.level);
+  const nx = nextGear(lv.level);
   const earnedMap = new Map(earned.map((b) => [b.badgeId, b.awardedAt]));
   const maxWeek = Math.max(1, ...weeks.map((w) => w.jp + w.dsa + w.general));
 
@@ -39,7 +43,7 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
     <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6 lg:grid-cols-6">
       <section className="glass-card flex flex-col items-center gap-3 rounded-3xl p-6 text-center md:col-span-4 md:flex-row md:text-left lg:col-span-6">
         <div className="relative">
-          <DarumaIcon eyes={2} className="h-28 w-28 drop-shadow-xl" />
+          <DaruAvatar level={lv.level} eager className="h-28 w-28 drop-shadow-xl" />
           <span className="absolute -bottom-1 left-1/2 h-3 w-20 -translate-x-1/2 rounded-full border" style={{ background: belt.color, borderColor: belt.edge }} aria-hidden="true" />
         </div>
         <div className="flex-1">
@@ -70,6 +74,26 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
       <section className="glass-card rounded-3xl p-6 md:col-span-4 lg:col-span-6">
         <p className={`${label} mb-3`}>Heatmap</p>
         <Heatmap year={year} data={heat.data} years={heat.years} basePath={`/${gate}/profil`} />
+      </section>
+
+      <section className="glass-card rounded-3xl p-6 md:col-span-4 lg:col-span-6">
+        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+          <p className={label}>Evolusi Daru</p>
+          <p className="text-xs text-text-secondary">{nx ? `Berikutnya di Lv ${nx.atLevel}: ${nx.gear.name}` : 'Semua perlengkapan sudah terbuka'}</p>
+        </div>
+        <ol className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-11">
+          {BELTS.map((b, i) => {
+            const open = i <= tier;
+            return (
+              <li key={b.romaji} aria-current={i === tier ? 'step' : undefined} className={`flex flex-col items-center rounded-2xl px-1 py-2 text-center ${i === tier ? 'bg-white shadow-sm ring-2 ring-[#0066cc]/30' : ''}`}>
+                <DaruAvatar tier={i} alt={open ? undefined : `Terkunci sampai Lv ${b.min}`} className={`h-16 w-16 ${open ? 'drop-shadow-md' : 'opacity-15 brightness-0'}`} />
+                <span className="mt-1 h-1.5 w-9 rounded-full border" style={{ background: b.color, borderColor: b.edge }} aria-hidden="true" />
+                <p className="mt-1 text-[11px] font-semibold leading-tight text-text-main">{open ? DARU_GEAR[i].name : 'Terkunci'}</p>
+                <p className="text-[10px] tabular-nums text-text-secondary">Lv {b.min}</p>
+              </li>
+            );
+          })}
+        </ol>
       </section>
 
       <section className="glass-card rounded-3xl p-6 md:col-span-4 lg:col-span-3">

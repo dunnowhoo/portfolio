@@ -13,6 +13,8 @@ import { computePace, computeStatuses, nextNode, type Track } from '@/lib/dojo/c
 import { requireDojo } from '@/lib/dojo/dal';
 import { getTodayStateCached, type StreakView } from '@/lib/dojo/engine/core';
 import { beltFor } from '@/lib/dojo/level';
+import { nextGear } from '@/lib/dojo/daru';
+import DaruAvatar from '@/components/dojo/DaruAvatar';
 import { loadProgress } from '@/lib/dojo/progress';
 import { daysUntil, greeting, longDateId, shortDateId } from '@/lib/dojo/time';
 
@@ -57,6 +59,7 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
   const greet = greeting(state.hour);
   const lv = state.level;
   const belt = beltFor(lv.level);
+  const nx = nextGear(lv.level);
   const progress = { jp: progJp, dsa: progDsa };
   const tracks = TRACKS.map((t) => {
     const statuses = computeStatuses(t.key, progress[t.key]);
@@ -137,11 +140,20 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
 
       {/* Daru */}
       <section className="glass-card flex flex-col items-center justify-center gap-3 rounded-3xl p-6 text-center md:col-span-4 lg:col-span-2">
-        <DarumaIcon eyes={1} className="h-28 w-28 drop-shadow-xl" />
+        <DaruAvatar level={lv.level} eager className="h-32 w-32 drop-shadow-xl" />
         <p className="font-jp text-sm font-semibold text-text-main" lang="ja">
           {belt.title} · {belt.titleRomaji}
         </p>
-        <p className="text-xs text-text-secondary">{state.nitoryu > 0 ? `二刀流 ${state.nitoryu} hari: kedua streak aman bersamaan` : 'Sabuk naik setiap 5 level.'}</p>
+        <p className="text-xs text-text-secondary">
+          {nx ? (
+            <>
+              Lv {nx.atLevel} membuka <span className="font-semibold text-text-main">{nx.gear.name}</span>
+            </>
+          ) : (
+            'Zirah Daru sudah lengkap.'
+          )}
+        </p>
+        {state.nitoryu > 0 && <p className="text-xs text-text-secondary">二刀流 {state.nitoryu} hari: kedua streak aman bersamaan</p>}
       </section>
 
       {/* Streak per jalur */}
