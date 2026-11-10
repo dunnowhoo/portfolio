@@ -70,7 +70,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     { id: 4, kind: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/fauzanputra.s/' },
     { id: 5, kind: 'email', label: 'Email', url: 'mailto:sanjaya@ristek.cs.ui.ac.id' },
   ],
-  education: { school: 'Universitas Indonesia', degree: 'Computer Science' },
+  education: { school: 'Universitas Indonesia', degree: 'Information Systems' },
   experience: EXPERIENCES,
   organization: ORGANIZATIONS,
   achievements: ACHIEVEMENTS,
