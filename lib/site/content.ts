@@ -28,6 +28,7 @@ export type SiteContent = {
   projects: (Project & Hideable)[];
   contact: { headingA: string; headingB: string; text: string; email: string; scheduleUrl: string };
   seo: { title: string; description: string; ogImage: string };
+  assistant: { variant: 'robot' | 'cats'; name: string; greeting: string; suggestions: string[]; notes: string };
 };
 
 export type SectionKey = keyof SiteContent;
@@ -43,6 +44,7 @@ export const SECTION_LABEL: Record<SectionKey, string> = {
   projects: 'Proyek',
   contact: 'Kontak',
   seo: 'SEO',
+  assistant: 'Asisten',
 };
 
 export const SECTION_KEYS = Object.keys(SECTION_LABEL) as SectionKey[];
@@ -87,6 +89,13 @@ export const DEFAULT_CONTENT: SiteContent = {
       'Portfolio of Fauzan Putra Sanjaya, an AI Solutions Engineer and Mobile Fullstack Developer building LLM agents, RAG pipelines, and scalable mobile & web systems.',
     ogImage: '',
   },
+  assistant: {
+    variant: 'robot',
+    name: 'Bit',
+    greeting: "Hi, I'm Bit. Ask me anything about Fauzan's work.",
+    suggestions: ['What AI projects has he built?', "What's his mobile experience?", 'Which tech does he use most?', 'How can I contact him?'],
+    notes: '',
+  },
 };
 
 export function visible<T extends Hideable>(items: T[]): T[] {
@@ -104,5 +113,7 @@ export function publicContent(c: SiteContent): SiteContent {
     achievements: strip(c.achievements),
     techstack: strip(c.techstack),
     projects: strip(c.projects),
+    // Catatan asisten hanya dipakai server (/api/ask), tidak perlu dikirim ke browser.
+    assistant: { ...c.assistant, notes: '' },
   };
 }

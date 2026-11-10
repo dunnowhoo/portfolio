@@ -192,6 +192,42 @@ export default function SectionForm({ k, value, onChange, errorIdx }: { k: Secti
         </div>
       );
     }
+    case 'assistant': {
+      const v = value as C['assistant'];
+      const set = (p: Partial<C['assistant']>) => onChange({ ...v, ...p });
+      return (
+        <div className="grid gap-4">
+          <SelectField
+            label="Banner di halaman utama"
+            value={v.variant}
+            options={['robot', 'cats'] as const}
+            labels={{ robot: 'Robot asisten (bisa ditanya)', cats: 'Kucing' }}
+            onChange={(variant) => set({ variant })}
+          />
+          <div className={two}>
+            <TextField label="Nama robot" value={v.name} onChange={(name) => set({ name })} />
+            <TextField label="Sapaan pembuka" value={v.greeting} onChange={(greeting) => set({ greeting })} />
+          </div>
+          <TagsField
+            label="Contoh pertanyaan (tombol)"
+            value={v.suggestions}
+            onChange={(suggestions) => set({ suggestions })}
+            max={6}
+            commas={false}
+            hint="Satu pertanyaan per entri (tekan Enter). Jawaban untuk pertanyaan yang sama disimpan 7 hari, jadi tidak memakai kuota Groq."
+          />
+          <TextField
+            label="Catatan untuk asisten"
+            value={v.notes}
+            onChange={(notes) => set({ notes })}
+            multiline
+            rows={6}
+            softMax={4000}
+            hint="Fakta tambahan yang boleh dipakai saat menjawab, mis. ketersediaan kerja, preferensi remote, atau bahasa yang dikuasai. Tidak tampil langsung di halaman."
+          />
+        </div>
+      );
+    }
     case 'seo': {
       const v = value as C['seo'];
       const set = (p: Partial<C['seo']>) => onChange({ ...v, ...p });

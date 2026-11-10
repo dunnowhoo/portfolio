@@ -12,7 +12,8 @@
     "db:migrate": "drizzle-kit migrate",
     "setup:secrets": "node scripts/setup-secrets.mjs",
     "hash-password": "node scripts/hash-password.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "env:groq": "node scripts/push-env.mjs GROQ_API_KEY"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1164.0",

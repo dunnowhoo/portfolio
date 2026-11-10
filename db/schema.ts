@@ -349,3 +349,29 @@ export const mediaAsset = pgTable('media_asset', {
   alt: text('alt'),
   createdAt: ts('created_at').notNull().defaultNow(),
 });
+
+// ---------- Asisten portfolio (/api/ask) ----------
+// Hanya hitungan untuk membatasi pemakaian; isi pertanyaan tidak disimpan. IP disimpan sebagai HMAC.
+export const askLog = pgTable(
+  'ask_log',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    ipHash: text('ip_hash').notNull(),
+    ok: boolean('ok').notNull().default(true),
+    ms: integer('ms'),
+    tokens: integer('tokens'),
+    createdAt: ts('created_at').notNull().defaultNow(),
+  },
+  (t) => [index('ask_log_ip_time_idx').on(t.ipHash, t.createdAt), index('ask_log_time_idx').on(t.createdAt)],
+);
+
+// Cache jawaban pertanyaan pertama (mis. tombol contoh pertanyaan), supaya tidak memakai kuota Groq.
+// key = hash(pertanyaan ternormalisasi + versi konten), jadi otomatis basi saat konten CMS berubah.
+export const askCache = pgTable('ask_cache', {
+  key: text('key').primaryKey(),
+  answer: text('answer').notNull(),
+  items: integer('items').notNull().default(0),
+  picked: integer('picked').notNull().default(0),
+  model: text('model'),
+  createdAt: ts('created_at').notNull().defaultNow(),
+});

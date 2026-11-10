@@ -3,7 +3,7 @@ import type { SiteContent } from '@/lib/site/content';
 
 const Achievements = ({ items }: { items: SiteContent['achievements'] }) => {
   return (
-    <div className="glass-card bento-hover rounded-3xl md:col-span-2 lg:col-span-2 row-span-1 p-5 flex flex-col overflow-hidden relative">
+    <div id="achievements" className="glass-card bento-hover rounded-3xl md:col-span-2 lg:col-span-2 row-span-1 p-5 flex flex-col overflow-hidden relative">
        
        <div className="flex items-center gap-2 mb-3 relative z-10">
            <div className="p-1.5 bg-white rounded-lg text-black border border-gray-200 shadow-sm">

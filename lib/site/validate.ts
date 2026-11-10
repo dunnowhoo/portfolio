@@ -187,6 +187,13 @@ export const SECTION_SCHEMAS = {
     scheduleUrl: url(),
   }),
   seo: z.object({ title: req(120), description: text(300), ogImage: url() }),
+  assistant: z.object({
+    variant: z.enum(['robot', 'cats']),
+    name: req(24),
+    greeting: req(160),
+    suggestions: z.array(req(80)).max(6, 'Maksimal 6 contoh pertanyaan.'),
+    notes: text(4000),
+  }),
 } satisfies Record<SectionKey, z.ZodType>;
 
 /** Ringkas error zod jadi daftar "jalur: pesan" yang bisa ditampilkan editor. */
