@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import { Sym } from '@/components/dojo/Sym';
 
 export type MateriItem = { id: string; track: 'jp' | 'dsa'; title: string; estMinutes: number; tags: string[]; read: boolean; nodes: number };
 
@@ -32,7 +33,11 @@ export default function MateriList({ gate, items }: { gate: string; items: Mater
                 <span className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold" style={{ background: m.track === 'jp' ? '#fdecea' : '#e6f0fa', color: m.track === 'jp' ? '#c2342d' : '#0057ad' }}>
                   {m.track === 'jp' ? '日本語' : 'DSA'}
                 </span>
-                {m.read && <span className="text-[12px] font-medium text-[#1f7a3a]">Sudah dibaca ✓</span>}
+                {m.read && (
+                  <span className="inline-flex items-center gap-0.5 text-[12px] font-medium text-[#1f7a3a]">
+                    Sudah dibaca <Sym name="check" className="text-[14px]" />
+                  </span>
+                )}
               </div>
               <p className="font-semibold leading-snug text-text-main">{m.title}</p>
               <p className="mt-auto text-[12px] text-text-secondary">

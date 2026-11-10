@@ -6,6 +6,7 @@ import { useState, useTransition } from 'react';
 import { checkIn, logActivity, logFree, manualQuest, markListen, rerollDaily, reviewItem, type ActivityKind } from '@/app/actions/today';
 import { emitAward } from '@/components/dojo/AwardToaster';
 import QuizButton from '@/components/dojo/quiz/QuizButton';
+import { Sym } from '@/components/dojo/Sym';
 import type { DailyItem, QuestView } from '@/lib/dojo/daily';
 import { RATING_LABEL, type Rating } from '@/lib/dojo/engine/srs';
 
@@ -30,9 +31,13 @@ function Ring({ value, goal, color }: { value: number; goal: number; color: stri
     <svg width="56" height="56" viewBox="0 0 56 56" aria-label={`${value} dari ${goal} XP`}>
       <circle cx="28" cy="28" r={r} fill="none" stroke="#e5e5ea" strokeWidth="6" />
       <circle cx="28" cy="28" r={r} fill="none" stroke={pct >= 1 ? '#34c759' : color} strokeWidth="6" strokeLinecap="round" strokeDasharray={`${c * pct} ${c}`} transform="rotate(-90 28 28)" />
-      <text x="28" y="32" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1d1d1f">
-        {pct >= 1 ? '✓' : `${Math.round(pct * 100)}%`}
-      </text>
+      {pct >= 1 ? (
+        <path d="M19.5 28.5l5.5 5.5 11.5-12" fill="none" stroke="#34c759" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      ) : (
+        <text x="28" y="32" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1d1d1f">
+          {`${Math.round(pct * 100)}%`}
+        </text>
+      )}
     </svg>
   );
 }
@@ -45,7 +50,7 @@ function ReviewControls({ item, onDone }: { item: DailyItem; onDone: () => void 
     <div className="mt-3">
       <label className="mb-2 flex items-center gap-2 text-[12px] text-text-secondary">
         <input type="checkbox" checked={quick} onChange={(e) => setQuick(e.target.checked)} className="rounded border-black/20 text-[#0066cc]" />
-        Mode cepat: recall pola + kompleksitas saja (tidak bisa naik ke ★3)
+        Mode cepat: recall pola + kompleksitas saja (tidak bisa naik ke bintang 3)
       </label>
       <div className="grid grid-cols-4 gap-1.5">
         {([1, 2, 3, 4] as Rating[]).map((r) => (
@@ -197,7 +202,11 @@ export default function TodayBoard({ gate, sets, quests, perfect, goals }: Props
         <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-text-secondary">日替わり · daily shuffle</p>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <h1 className="text-3xl font-bold text-text-main md:text-4xl">Hari ini</h1>
-          {perfect && <span className="rounded-full bg-[#eaf8ee] px-3 py-1 text-[13px] font-semibold text-[#1f7a3a]">Perfect day ✓</span>}
+          {perfect && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#eaf8ee] px-3 py-1 text-[13px] font-semibold text-[#1f7a3a]">
+              Perfect day <Sym name="check" className="text-[16px]" />
+            </span>
+          )}
         </div>
         <p className="mt-1 text-sm text-text-secondary">Set yang sama di semua perangkat. Selesaikan semua item + kedua daily goal untuk bonus Perfect day (+20 XP).</p>
       </div>

@@ -5,6 +5,8 @@ import { useState, useTransition } from 'react';
 import { addCountdown, addDaruma, addSession, darumaAction, deleteCountdown, deleteSession, saveWarChecklist, updateSession } from '@/app/actions/calendar';
 import { emitAward } from '@/components/dojo/AwardToaster';
 import DarumaIcon from '@/components/dojo/DarumaIcon';
+import DojoIcon from '@/components/dojo/DojoIcon';
+import { Sym } from '@/components/dojo/Sym';
 
 export type SessionRow = { id: string; examDate: string; levelPlanned: string; city: string; regOpenAt: string; regCloseAt: string; isEstimate: boolean; status: string; score: string; notes: string };
 type Props = {
@@ -85,7 +87,9 @@ export default function CalendarBoard({ sessions, statuses, countdowns, darumas,
 
       <div className="grid gap-6 md:grid-cols-2">
         <section className="glass-card rounded-3xl p-6">
-          <h2 className="text-lg font-bold text-text-main">Checklist war 🎌</h2>
+          <h2 className="flex items-center gap-2 text-lg font-bold text-text-main">
+            Checklist war <DojoIcon name="banner" className="h-6 w-6" />
+          </h2>
           <ul className="mt-3 space-y-2">
             {items.map((it, i) => (
               <li key={`${it.text}-${i}`} className="flex items-center gap-2">
@@ -150,7 +154,7 @@ export default function CalendarBoard({ sessions, statuses, countdowns, darumas,
                 <DarumaIcon eyes={d.eyes} color={d.track === 'dsa' ? '#0066cc' : d.track === 'general' ? '#d4a017' : '#e8453c'} className="h-12 w-12" />
                 <div>
                   <p className="text-[14px] font-semibold text-text-main">{d.title}</p>
-                  <p className="text-[12px] text-text-secondary">{d.status === 'achieved' ? 'Tercapai ✓' : d.status === 'released' ? 'Dilepas (pelajaran)' : d.dueDate ? `Target ${d.dueDate}` : ''}</p>
+                  <p className="text-[12px] text-text-secondary">{d.status === 'achieved' ? <>Tercapai <Sym name="check" className="text-[14px]" /></> : d.status === 'released' ? 'Dilepas (pelajaran)' : d.dueDate ? `Target ${d.dueDate}` : ''}</p>
                 </div>
               </div>
               {d.status === 'active' && (

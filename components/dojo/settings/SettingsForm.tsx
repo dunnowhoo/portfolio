@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { addBusyDay, logoutEverywhere, removeBusyDay, saveProfile } from '@/app/actions/settings';
+import DojoIcon from '@/components/dojo/DojoIcon';
 
 type P = { displayName: string; timezone: string; dayStartHour: number; dailyGoalJp: number; dailyGoalDsa: number; streakMinXp: number };
 const TZ = ['Asia/Jakarta', 'Asia/Tokyo', 'Asia/Singapore', 'Asia/Makassar', 'Asia/Jayapura', 'UTC'];
@@ -47,7 +48,9 @@ export default function SettingsForm({ profile, busy }: { profile: P; busy: { da
       </section>
 
       <section className="glass-card rounded-3xl p-6">
-        <h2 className="text-lg font-bold text-text-main">Mode sibuk 💼</h2>
+        <h2 className="flex items-center gap-2 text-lg font-bold text-text-main">
+          Mode sibuk <DojoIcon name="briefcase" className="h-6 w-6" />
+        </h2>
         <p className="text-[12px] text-text-secondary">Ambang streak turun ke 5 XP pada hari itu. Pasang sebelum harinya mulai; maks 3 hari per bulan per jalur.</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <input type="date" value={b.date} onChange={(e) => setB({ ...b, date: e.target.value })} className="rounded-xl border-black/10 text-sm" aria-label="Tanggal sibuk" />

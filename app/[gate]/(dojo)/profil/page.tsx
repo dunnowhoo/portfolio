@@ -9,6 +9,9 @@ import { getTodayStateCached } from '@/lib/dojo/engine/core';
 import { BELTS, beltFor } from '@/lib/dojo/level';
 import { DARU_GEAR, daruTier, nextGear } from '@/lib/dojo/daru';
 import DaruAvatar from '@/components/dojo/DaruAvatar';
+import DojoIcon from '@/components/dojo/DojoIcon';
+import { Stars, Sym } from '@/components/dojo/Sym';
+import type { DojoIconName } from '@/lib/dojo/icons';
 import { loadProgress } from '@/lib/dojo/progress';
 import { heatmapData, profileStats, weeklyXp } from '@/lib/dojo/stats';
 
@@ -57,13 +60,18 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 text-center">
-          {[
-            ['🔥 日本語', state.streaks.jp.current, `terpanjang ${state.streaks.jp.longest}`],
-            ['🔥 DSA', state.streaks.dsa.current, `terpanjang ${state.streaks.dsa.longest}`],
-            ['二刀流', state.nitoryu, 'hari bersamaan'],
-          ].map(([t, v, s]) => (
-            <div key={String(t)} className="rounded-2xl bg-white px-4 py-3">
-              <p className="font-jp text-[12px] text-text-secondary">{t}</p>
+          {(
+            [
+              ['flame', '日本語', state.streaks.jp.current, `terpanjang ${state.streaks.jp.longest}`],
+              ['flame-blue', 'DSA', state.streaks.dsa.current, `terpanjang ${state.streaks.dsa.longest}`],
+              [null, '二刀流', state.nitoryu, 'hari bersamaan'],
+            ] as [DojoIconName | null, string, number, string][]
+          ).map(([icon, t, v, s]) => (
+            <div key={t} className="rounded-2xl bg-white px-4 py-3">
+              <p className="flex items-center justify-center gap-1 font-jp text-[12px] text-text-secondary">
+                {icon && <DojoIcon name={icon} className="h-4 w-4" />}
+                {t}
+              </p>
               <p className="text-2xl font-bold tabular-nums text-text-main">{v}</p>
               <p className="text-[11px] text-text-secondary">{s}</p>
             </div>
@@ -111,7 +119,9 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
           })}
         </div>
         <p className="mt-2 text-[11px] text-text-secondary">
-          <span className="text-[#e8453c]">■</span> 日本語 <span className="text-[#0066cc]">■</span> DSA <span className="text-[#c7c7cc]">■</span> bonus
+          <span className="mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-[#e8453c] align-middle" aria-hidden="true" />日本語
+          <span className="ml-3 mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-[#0066cc] align-middle" aria-hidden="true" />DSA
+          <span className="ml-3 mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-[#c7c7cc] align-middle" aria-hidden="true" />bonus
         </p>
       </section>
 
@@ -122,7 +132,7 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
           <div><dt className="text-text-secondary">Jam DSA</dt><dd className="text-xl font-bold tabular-nums">{stats.hours.dsa.toFixed(1)}</dd></div>
           <div><dt className="text-text-secondary">Soal selesai</dt><dd className="text-xl font-bold tabular-nums">{stats.solved} <span className="text-[13px] font-normal text-text-secondary">E{stats.byLevel.E} · M{stats.byLevel.M} · H{stats.byLevel.H}</span></dd></div>
           <div><dt className="text-text-secondary">Kana dikuasai</dt><dd className="text-xl font-bold tabular-nums">{stats.kana.strong}<span className="text-[13px] font-normal text-text-secondary">/{stats.kana.total}</span></dd></div>
-          <div><dt className="text-text-secondary">Kanji ★2</dt><dd className="text-xl font-bold tabular-nums">{stats.kanji.strong}<span className="text-[13px] font-normal text-text-secondary">/{stats.kanji.total}</span></dd></div>
+          <div><dt className="flex items-center gap-1 text-text-secondary">Kanji <Stars n={2} of={2} size="text-[13px]" /></dt><dd className="text-xl font-bold tabular-nums">{stats.kanji.strong}<span className="text-[13px] font-normal text-text-secondary">/{stats.kanji.total}</span></dd></div>
           <div><dt className="text-text-secondary">Akurasi kuis</dt><dd className="text-[13px] tabular-nums">kana {stats.accuracy.kana ?? '—'}% · kanji {stats.accuracy.kanji ?? '—'}% · grammar {stats.accuracy.grammar ?? '—'}% · pola {stats.accuracy.pattern ?? '—'}%</dd></div>
         </dl>
       </section>
@@ -140,13 +150,13 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
       </section>
 
       <section className="glass-card rounded-3xl p-6 md:col-span-4 lg:col-span-3">
-        <p className={`${label} mb-3`}>DSA per topik (★ rata-rata)</p>
+        <p className={`${label} mb-3`}>DSA per topik (rata-rata bintang)</p>
         <ul className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
           {stats.topics.map((t) => (
             <li key={t.id} className="flex items-center justify-between gap-2 text-[13px]">
               <span className="truncate text-text-main">{t.title}</span>
               <span className="whitespace-nowrap tabular-nums text-text-secondary">
-                {t.solved}/{t.total} <span className="text-[#ffb800]">{'★'.repeat(Math.round(t.avgStars))}</span>
+                {t.solved}/{t.total} <Stars n={Math.round(t.avgStars)} size="text-[13px]" />
               </span>
             </li>
           ))}
@@ -161,7 +171,15 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
             <li key={d.id} className="flex flex-col items-center gap-1 text-center" title={`${d.title}${d.dueDate ? ` · ${fmtDate(d.dueDate)}` : ''}`}>
               <DarumaIcon eyes={d.rightEyeAt ? 2 : 1} color={d.track === 'dsa' ? '#0066cc' : d.track === 'general' ? '#d4a017' : '#e8453c'} className="h-16 w-16" />
               <span className="text-xs font-semibold text-text-main">{d.title}</span>
-              <span className="text-[10px] text-text-secondary">{d.status === 'achieved' ? 'tercapai ✓' : d.dueDate ? fmtDate(d.dueDate) : ''}</span>
+              <span className="text-[10px] text-text-secondary">{d.status === 'achieved' ? (
+                  <>
+                    tercapai <Sym name="check" className="text-[12px]" />
+                  </>
+                ) : d.dueDate ? (
+                  fmtDate(d.dueDate)
+                ) : (
+                  ''
+                )}</span>
             </li>
           ))}
         </ul>
@@ -180,7 +198,7 @@ export default async function ProfilPage({ params, searchParams }: { params: Pro
                 const at = earnedMap.get(b.id);
                 return (
                   <li key={b.id} className={`rounded-2xl border p-3 ${at ? 'border-[#ffd76a] bg-[#fffaf0]' : 'border-black/5 bg-white/60 opacity-70 grayscale'}`} title={b.hint}>
-                    <p className="text-lg" aria-hidden="true">{at ? '🏅' : '🔒'}</p>
+                    <DojoIcon name={at ? 'medal' : 'lock'} className="h-7 w-7" />
                     <p className="font-jp text-[13px] font-semibold leading-tight text-text-main">{b.name}</p>
                     <p className="mt-0.5 text-[11px] leading-snug text-text-secondary">{at ? fmtDate(at) : b.hint}</p>
                   </li>

@@ -7,7 +7,7 @@ Status: Draft v1 · 9 November 2026 · Bahasa latihan: **Python 3**
 | Section | Isi | Periode | Ujung |
 |---|---|---|---|
 | D0 | Fondasi: Big-O, toolkit Python, rekursi, cara memecahkan soal | 9–29 Nov 2026 | Checkpoint fondasi |
-| D1–D18 | **NeetCode 150**, dikelompokkan dalam 18 topik | 30 Nov 2026 – 16 Agu 2027 | 🎌 **NC150 selesai** (Daruma, tenggat 31 Agu 2027) |
+| D1–D18 | **NeetCode 150**, dikelompokkan dalam 18 topik | 30 Nov 2026 – 16 Agu 2027 | [milestone] **NC150 selesai** (Daruma, tenggat 31 Agu 2027) |
 | D19 | Interview Mastery: review SRS, 34 soal ekstra, mock interview, kontes | Sep – Des 2027 | 80% soal ★2, 4 mock interview |
 | D20 | Kontes dan Jepang: AtCoder ABC (soal berbahasa Jepang), paiza, perawatan | Jan – Sep 2028 | Rating dan kebiasaan terjaga saat fokus N3 |
 | D21 | (Opsional) System design dasar, untuk target AWS atau luar negeri | 2028+ | |
@@ -69,12 +69,12 @@ Mock interview dilakukan 1× per bulan mulai Maret 2027 dan setiap minggu di D19
 ## 3. Template node per topik
 
 ```
-📖 Materi topik (MD)                         20 XP
-🎬 Video konsep NeetCode untuk topik         10 XP
-🎯 Soal 1..n (urutan Easy → Medium → Hard)   10/20/40 XP per soal
-🎯 Tebak Pola topik (5 kartu)                10 XP
-👹 Boss: 2 soal acak topik, 45 menit, tanpa melihat solusi    80 XP
-✍️ Refleksi: tulis "kapan aku pakai pola ini" (3 kalimat)    20 XP
+mt Materi topik (MD)                         20 XP
+vd Video konsep NeetCode untuk topik         10 XP
+lt Soal 1..n (urutan Easy → Medium → Hard)   10/20/40 XP per soal
+lt Tebak Pola topik (5 kartu)                10 XP
+bs Boss: 2 soal acak topik, 45 menit, tanpa melihat solusi    80 XP
+rf Refleksi: tulis "kapan aku pakai pola ini" (3 kalimat)    20 XP
 ```
 
 Link per soal: `https://leetcode.com/problems/{slug}/`. Video solusi dicari dengan kata kunci `neetcode {judul soal}`, lalu ID-nya disimpan saat M2. Kolom **Ringkasan** adalah parafrase singkat buatan sendiri (bukan salinan soal), dan dipakai di kartu Tebak Pola.
@@ -83,14 +83,14 @@ Link per soal: `https://leetcode.com/problems/{slug}/`. Video solusi dicari deng
 
 | Node | Isi |
 |---|---|
-| 📖 `dsa-00-cara-belajar` | Cara belajar DSA, SRS, batas waktu, jurnal pola |
-| 📖 `dsa-01-big-o` | Big-O, menghitung kompleksitas, tabel batas input |
-| 🎬 | "neetcode big o notation" |
-| 📖 `dsa-02-python-toolkit` | list, dict, set, deque, heapq, bisect, Counter, defaultdict, sort key |
-| 🎯 Pemanasan | `1480 running-sum-of-1d-array` (E) · `1672 richest-customer-wealth` (E) · `412 fizz-buzz` (E) |
-| 📖 `dsa-03-rekursi` | Rekursi, call stack, base case, memo |
-| 📖 `dsa-04-problem-solving` | Metode UMPIRE + cara bicara saat interview |
-| 🏯 Checkpoint | 10 soal kuis Big-O bawaan + 1 soal Easy dalam 15 menit |
+| [materi] `dsa-00-cara-belajar` | Cara belajar DSA, SRS, batas waktu, jurnal pola |
+| [materi] `dsa-01-big-o` | Big-O, menghitung kompleksitas, tabel batas input |
+| [video] | "neetcode big o notation" |
+| [materi] `dsa-02-python-toolkit` | list, dict, set, deque, heapq, bisect, Counter, defaultdict, sort key |
+| [latihan] Pemanasan | `1480 running-sum-of-1d-array` (E) · `1672 richest-customer-wealth` (E) · `412 fizz-buzz` (E) |
+| [materi] `dsa-03-rekursi` | Rekursi, call stack, base case, memo |
+| [materi] `dsa-04-problem-solving` | Metode UMPIRE + cara bicara saat interview |
+| [checkpoint] Checkpoint | 10 soal kuis Big-O bawaan + 1 soal Easy dalam 15 menit |
 
 ## 5. D1–D18: NeetCode 150
 

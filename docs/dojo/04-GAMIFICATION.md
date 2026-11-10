@@ -22,19 +22,19 @@ Kejujuran: Dōjō adalah alat untuk dirimu sendiri. Soal DSA dihitung "selesai" 
 
 | Tipe node | XP | Catatan |
 |---|---|---|
-| 📖 Materi (baca MD) | 20 | Butuh minimal 3 menit terbuka, atau tombol "Sudah dibaca" + rating |
-| 🎬 Video | 10 | |
-| 📗 Irodori (1 pelajaran) | 40 | Bacaan + audio + latihan di buku, sekitar 60–90 menit |
-| 🎯 Latihan bawaan (sprint/recall) | 10, +5 kalau akurasi ≥ 90% | |
-| 🟢 Target Duolingo (section/unit) | 30 | |
-| 🃏 Target Anki (kumulatif Kaishi) | 30 | |
-| 🏯 Checkpoint unit | 50 | Lulus kalau skor ≥ 80% |
-| 👹 Boss (set soal ber-timer, simulasi) | 80 | |
-| 👹 Boss section (simulasi JLPT, set besar) | 150 | |
-| 🎌 Milestone: terdaftar JLPT | 100 | |
-| 🎌 Milestone: ikut ujian JLPT | 300 | |
-| 🎌 Milestone: lulus JLPT | 1.000 | |
-| ✍️ Refleksi | 20 | |
+| [materi] Materi (baca MD) | 20 | Butuh minimal 3 menit terbuka, atau tombol "Sudah dibaca" + rating |
+| [video] Video | 10 | |
+| [Irodori] Irodori (1 pelajaran) | 40 | Bacaan + audio + latihan di buku, sekitar 60–90 menit |
+| [latihan] Latihan bawaan (sprint/recall) | 10, +5 kalau akurasi ≥ 90% | |
+| [Duolingo] Target Duolingo (section/unit) | 30 | |
+| [Anki] Target Anki (kumulatif Kaishi) | 30 | |
+| [checkpoint] Checkpoint unit | 50 | Lulus kalau skor ≥ 80% |
+| [boss] Boss (set soal ber-timer, simulasi) | 80 | |
+| [boss] Boss section (simulasi JLPT, set besar) | 150 | |
+| [milestone] Milestone: terdaftar JLPT | 100 | |
+| [milestone] Milestone: ikut ujian JLPT | 300 | |
+| [milestone] Milestone: lulus JLPT | 1.000 | |
+| [refleksi] Refleksi | 20 | |
 | Node dilewati lewat checkpoint | 50% dari XP node | |
 
 ### 2.2 Aktivitas berulang
@@ -129,7 +129,7 @@ Maskot Daru memakai sabuk sesuai levelmu di avatar dan di layar naik level. Nama
 | **Retak** | Hari kemarin bolong tanpa freeze dan repair masih bisa dipakai | Api retak + tombol "Pulihkan" |
 | Mode sibuk | Hari yang ditandai sibuk | Ikon tas, ambang turun ke 5 XP |
 
-### 4.3 Freeze 🧊
+### 4.3 Freeze [freeze]
 - Mulai dengan **1 freeze per jalur**, maksimal **2**.
 - Dapat +1 setiap kali **target mingguan jalur itu tercapai**.
 - **Otomatis terpakai** saat pergantian hari kalau hari kemarin tidak aman dan masih ada freeze.

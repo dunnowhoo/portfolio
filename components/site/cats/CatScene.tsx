@@ -411,7 +411,7 @@ export default function CatScene({ layout: L, className = '', onSecret, onIntera
       male: [L.male + MALE_HEAD.x * S, F + (MALE_HEAD.y - 80) * S, 'purrr'],
       female: [sim.female.x, F + sim.female.y + (FEMALE_HEAD_Y - 70) * S * FS, 'mrrp?'],
       lynx: [sim.lynx.x + LYNX_HEAD.x * S * sim.lynx.face, F + sim.lynx.y + (LYNX_HEAD.y - 54) * S, 'mew!'],
-      dev: [L.shelf.x, L.shelf.y + (DEV_HEAD_Y - 62) * S, 'git push ✓'],
+      dev: [L.shelf.x, L.shelf.y + (DEV_HEAD_Y - 62) * S, 'git push!'],
     };
     const [x, y, text] = spots[who];
     const id = ++popId.current;

@@ -5,6 +5,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import NodeSheet, { TRACK_COLOR } from '@/components/dojo/path/NodeSheet';
 import type { NodeStatus, Pace } from '@/lib/dojo/curriculum';
 import { NODE_ICON, NODE_LABEL, type PathNode, type Section, type Track, type Unit } from '@/lib/dojo/curriculum/types';
+import type { DojoIconName } from '@/lib/dojo/icons';
+import DojoIcon from '@/components/dojo/DojoIcon';
+import { Stars, Sym } from '@/components/dojo/Sym';
 
 export type PathSide = {
   streak: { current: number; freezes: number; status: string; todayXp: number; goal: number; threshold: number; minutesLeft: number; repairTarget?: number };
@@ -50,8 +53,20 @@ function StationSign({ unit, prev, next, done, total, color }: { unit: Unit; pre
   return (
     <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border border-black/5 bg-white shadow-soft">
       <div className="flex items-center justify-between px-4 pt-3 text-[11px] text-text-secondary">
-        <span className="max-w-[45%] truncate">{prev ? `◀ ${prev.id} ${prev.title}` : ''}</span>
-        <span className="max-w-[45%] truncate text-right">{next ? `${next.id} ${next.title} ▶` : ''}</span>
+        <span className="max-w-[45%] truncate">
+          {prev && (
+            <>
+              <Sym name="chevron_left" className="text-[14px]" /> {prev.id} {prev.title}
+            </>
+          )}
+        </span>
+        <span className="max-w-[45%] truncate text-right">
+          {next && (
+            <>
+              {next.id} {next.title} <Sym name="chevron_right" className="text-[14px]" />
+            </>
+          )}
+        </span>
       </div>
       <div className="px-4 pb-3 pt-1 text-center">
         <p className="font-jp text-xl font-bold text-text-main" lang="ja">{unit.jp ?? unit.title}</p>
@@ -103,7 +118,7 @@ function NodeButton({ node, status, stars, due, isNext, color, soft, onOpen, nex
             opacity: locked ? 0.75 : 1,
           }}
         >
-          <span aria-hidden="true">{done ? '✓' : NODE_ICON[node.type]}</span>
+          {done ? <Sym name="check" bold className="text-[30px] text-white" /> : <DojoIcon name={NODE_ICON[node.type]} className="h-[60%] w-[60%]" />}
         </span>
         {locked && (
           <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-[#8e8e93] shadow" aria-hidden="true">
@@ -114,12 +129,7 @@ function NodeButton({ node, status, stars, due, isNext, color, soft, onOpen, nex
           <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#ff9500]" title="Perlu review" aria-hidden="true" />
         )}
       </span>
-      {stars > 0 && (
-        <span className="mt-0.5 text-[12px] leading-none text-[#ffb800]" aria-label={`${stars} bintang`}>
-          {'★'.repeat(stars)}
-          <span className="text-[#d1d1d6]">{'★'.repeat(Math.max(0, 3 - stars))}</span>
-        </span>
-      )}
+      {stars > 0 && <Stars n={stars} size="text-[14px]" className="mt-0.5" />}
       <span className={`mt-1 line-clamp-2 rounded-md bg-[#f5f5f7]/90 px-1.5 text-center text-[12px] leading-tight ${locked ? 'text-[#8e8e93]' : 'text-text-main'}`}>{node.title}</span>
     </button>
   );
@@ -175,7 +185,7 @@ export default function PathMap({ track, sections, statuses, mastery, dueIds, pa
             <span
               className={`rounded-full px-3 py-1 text-[13px] font-semibold ${pace.tone === 'behind' ? 'bg-[#fff4e0] text-[#9a5b00]' : pace.tone === 'ahead' ? 'bg-[#eaf8ee] text-[#1f7a3a]' : 'bg-[#f2f2f7] text-[#3a3a3c]'}`}
             >
-              {pace.tone === 'ok' ? '✓ ' : pace.tone === 'ahead' ? '▲ ' : '▼ '}
+              <Sym name={pace.tone === 'ok' ? 'check' : pace.tone === 'ahead' ? 'trending_up' : 'trending_down'} className="mr-1 text-[16px]" />
               {pace.label}
             </span>
           </div>
@@ -193,12 +203,21 @@ export default function PathMap({ track, sections, statuses, mastery, dueIds, pa
               </button>
             )}
             <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-text-secondary">
-              <span>📖 materi</span>
-              <span>🎬 video</span>
-              <span>{track === 'jp' ? '📗 Irodori' : '🎯 soal'}</span>
-              <span>🏯 checkpoint</span>
-              <span>👹 boss</span>
-              <span>🎌 milestone</span>
+              {(
+                [
+                  ['materi', 'materi'],
+                  ['video', 'video'],
+                  track === 'jp' ? ['irodori', 'Irodori'] : ['target', 'soal'],
+                  ['castle', 'checkpoint'],
+                  ['oni', 'boss'],
+                  ['banner', 'milestone'],
+                ] as [DojoIconName, string][]
+              ).map(([icon, text]) => (
+                <span key={text} className="inline-flex items-center gap-1">
+                  <DojoIcon name={icon} className="h-4 w-4" />
+                  {text}
+                </span>
+              ))}
             </span>
           </div>
         </div>
@@ -288,12 +307,24 @@ export default function PathMap({ track, sections, statuses, mastery, dueIds, pa
         <div className="sticky top-28 space-y-4">
           <div className="glass-card rounded-3xl p-5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-text-secondary">Streak {track === 'jp' ? '日本語' : 'DSA'}</p>
-            <p className="mt-1 text-4xl font-bold tabular-nums text-text-main">
-              🔥 {side.streak.current}
-              <span className="ml-1 text-base font-medium text-text-secondary">hari</span>
+            <p className="mt-1 flex items-center gap-2 text-4xl font-bold tabular-nums text-text-main">
+              <DojoIcon name={track === 'jp' ? 'flame' : 'flame-blue'} className="h-9 w-9" muted={side.streak.status !== 'aman' && side.streak.status !== 'berisiko'} />
+              {side.streak.current}
+              <span className="text-base font-medium text-text-secondary">hari</span>
             </p>
-            <p className="mt-1 text-[13px] text-text-secondary">
-              {side.streak.status === 'aman' ? 'Aman hari ini ✓' : side.streak.status === 'retak' ? `Retak: capai ${side.streak.repairTarget} XP hari ini` : `Butuh ${Math.max(0, side.streak.threshold - side.streak.todayXp)} XP lagi`} · 🧊 {side.streak.freezes}
+            <p className="mt-1 flex flex-wrap items-center gap-1 text-[13px] text-text-secondary">
+              {side.streak.status === 'aman' ? (
+                <>
+                  Aman hari ini <Sym name="check" className="text-[16px] text-[#1f7a3a]" />
+                </>
+              ) : side.streak.status === 'retak' ? (
+                `Retak: capai ${side.streak.repairTarget} XP hari ini`
+              ) : (
+                `Butuh ${Math.max(0, side.streak.threshold - side.streak.todayXp)} XP lagi`
+              )}
+              <span aria-hidden="true">·</span>
+              <DojoIcon name="ice" className="h-4 w-4" label="freeze" />
+              {side.streak.freezes}
             </p>
           </div>
           <div className="glass-card rounded-3xl p-5">

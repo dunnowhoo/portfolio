@@ -160,16 +160,16 @@ Setiap fitur ditulis sebagai kebutuhan diikuti **kriteria terima (AC)**.
 
 | Ikon | Tipe | Isi |
 |---|---|---|
-| 📖 | Materi | Materi MD yang ditulis khusus |
-| 🎬 | Video | Video YouTube yang di-embed |
-| 📗 | Irodori | Link PDF dan halaman audio pelajaran |
-| 🎯 | Latihan | Kuis bawaan (kana, kanji, grammar recall, tebak pola) atau daftar soal |
-| 🟢 | Duolingo | Target section/unit |
-| 🃏 | Anki | Target kumulatif kartu Kaishi |
-| 🏯 | Checkpoint | Kuis penutup unit |
-| 👹 | Boss | Set soal ber-timer atau simulasi |
-| 🎌 | Milestone | Tanggal ujian atau war pendaftaran, dengan countdown |
-| ✍️ | Refleksi | Catatan singkat |
+| [materi] | Materi | Materi MD yang ditulis khusus |
+| [video] | Video | Video YouTube yang di-embed |
+| [Irodori] | Irodori | Link PDF dan halaman audio pelajaran |
+| [latihan] | Latihan | Kuis bawaan (kana, kanji, grammar recall, tebak pola) atau daftar soal |
+| [Duolingo] | Duolingo | Target section/unit |
+| [Anki] | Anki | Target kumulatif kartu Kaishi |
+| [checkpoint] | Checkpoint | Kuis penutup unit |
+| [boss] | Boss | Set soal ber-timer atau simulasi |
+| [milestone] | Milestone | Tanggal ujian atau war pendaftaran, dengan countdown |
+| [refleksi] | Refleksi | Catatan singkat |
 
 - **Status node:** terkunci, tersedia, berjalan, selesai (★1), dikuasai (★2/★3), dan perlu review.
 - **Aturan buka:**

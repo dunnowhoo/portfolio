@@ -7,6 +7,8 @@ import { emitAward } from '@/components/dojo/AwardToaster';
 import Prose from '@/components/dojo/Prose';
 import QuizButton from '@/components/dojo/quiz/QuizButton';
 import { NODE_ICON, NODE_LABEL, type PathNode } from '@/lib/dojo/curriculum/types';
+import DojoIcon from '@/components/dojo/DojoIcon';
+import { Stars, Sym } from '@/components/dojo/Sym';
 import { RATING_LABEL, type Rating } from '@/lib/dojo/engine/srs';
 
 type Tab = 'materi' | 'video' | 'latihan' | 'sumber' | 'catatan';
@@ -163,8 +165,8 @@ export default function NodeSheet({ node, onClose, onChanged }: { node: PathNode
         <div className="border-b border-black/5 bg-white/80 px-5 pb-3 pt-4 backdrop-blur">
           <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-black/10 md:hidden" aria-hidden="true" />
           <div className="flex items-start gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl" style={{ background: `${color}14` }} aria-hidden="true">
-              {NODE_ICON[node.type]}
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: `${color}14` }} aria-hidden="true">
+              <DojoIcon name={NODE_ICON[node.type]} className="h-7 w-7" />
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color }}>
@@ -363,7 +365,7 @@ export default function NodeSheet({ node, onClose, onChanged }: { node: PathNode
                       {detail.resources.map((r) => (
                         <li key={r.id} className="flex items-center justify-between gap-2">
                           <a href={r.url ?? '#'} target="_blank" rel="noreferrer" className="truncate text-sm text-[#0066cc] hover:underline">
-                            {r.youtubeId ? '▶ ' : ''}
+                            {r.youtubeId && <Sym name="play_circle" className="mr-1 text-[16px]" />}
                             {r.title}
                           </a>
                           <button type="button" onClick={() => startTransition(async () => { await removeResource(r.id); await reload(); })} className="rounded-full p-1 text-text-secondary hover:text-[#c2452d]" aria-label={`Hapus ${r.title}`}>
@@ -408,8 +410,23 @@ export default function NodeSheet({ node, onClose, onChanged }: { node: PathNode
             {doneMsg && <p className="mb-2 rounded-xl bg-[#eaf8ee] px-3 py-2 text-[13px] text-[#1f7a3a]">{doneMsg}</p>}
             {completed ? (
               <p className="py-2 text-sm text-text-main">
-                <span className="font-semibold text-[#1f7a3a]">{status === 'skipped' ? 'Dilewati' : 'Selesai ✓'}</span>
-                {detail.progress?.mastery ? ` · ${'★'.repeat(detail.progress.mastery)}` : ''}
+                <span className="font-semibold text-[#1f7a3a]">
+                  {status === 'skipped' ? (
+                    'Dilewati'
+                  ) : (
+                    <>
+                      Selesai <Sym name="check" className="text-[16px]" />
+                    </>
+                  )}
+                </span>
+                {detail.progress?.mastery ? (
+                  <>
+                    {' · '}
+                    <Stars n={detail.progress.mastery} />
+                  </>
+                ) : (
+                  ''
+                )}
                 {detail.progress?.srsDue ? ` · review ${fmtDate(detail.progress.srsDue)}` : ''}
               </p>
             ) : locked && !skipTest ? (
