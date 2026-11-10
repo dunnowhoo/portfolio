@@ -4,6 +4,7 @@ import { requestMeta } from '@/lib/auth/request';
 import { buildContext, normalizeQuestion, systemPrompt } from '@/lib/site/assistant';
 import { cacheGet, cachePut, checkLimit, ipHash, logAsk, openGroqStream, sseDeltas } from '@/lib/site/ask';
 import { getPublishedContent } from '@/lib/site/cms';
+import { getCvChunks } from '@/lib/site/cv';
 
 // "Tanya portfolio": jawaban asisten robot di halaman utama, di-stream sebagai NDJSON:
 // {"t":"meta",...} → {"t":"d","v":"…"}* → {"t":"end"} (atau {"t":"err"}).
@@ -46,7 +47,8 @@ export async function POST(req: Request) {
 
   // Retrieval memakai pertanyaan + pertanyaan sebelumnya (untuk pertanyaan lanjutan seperti "yang kedua?")
   const lastUser = [...history].reverse().find((h) => h.role === 'user')?.content ?? '';
-  const ctx = buildContext(content, `${question} ${lastUser}`);
+  const cv = await getCvChunks(content.profile.resumeUrl, new URL(req.url).origin);
+  const ctx = buildContext(content, `${question} ${lastUser}`, cv);
   const cacheKey = history.length === 0 ? sha256Hex(`${normalizeQuestion(question)}|${sha256Hex(ctx.text)}`) : null;
   const enc = new TextEncoder();
   const line = (o: unknown) => enc.encode(`${JSON.stringify(o)}\n`);
