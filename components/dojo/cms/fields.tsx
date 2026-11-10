@@ -88,14 +88,14 @@ export function UrlField({ label, value, onChange, mailto, hint, placeholder }: 
   );
 }
 
-export function SelectField<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: readonly T[]; onChange: (v: T) => void }) {
+export function SelectField<T extends string>({ label, value, options, onChange, labels }: { label: string; value: T; options: readonly T[]; onChange: (v: T) => void; labels?: Partial<Record<T, string>> }) {
   return (
     <label className={labelCls}>
       {label}
       <select value={value} onChange={(e) => onChange(e.target.value as T)} className={`${inputCls} mt-1`}>
         {options.map((o) => (
           <option key={o} value={o}>
-            {o}
+            {labels?.[o] ?? o}
           </option>
         ))}
       </select>
@@ -120,12 +120,12 @@ export function ToggleField({ label, checked, onChange, hint }: { label: string;
 }
 
 // ---------- Tag ----------
-export function TagsField({ label, value, onChange, suggestions, hint, max = 30 }: { label: string; value: string[]; onChange: (v: string[]) => void; suggestions?: string[]; hint?: string; max?: number }) {
+export function TagsField({ label, value, onChange, suggestions, hint, max = 30, commas = true }: { label: string; value: string[]; onChange: (v: string[]) => void; suggestions?: string[]; hint?: string; max?: number; commas?: boolean }) {
   const [draft, setDraft] = useState('');
   const listId = useId();
   const add = (raw: string) => {
     const next = [...value];
-    for (const p of raw.split(',').map((s) => s.trim()).filter(Boolean)) if (!next.includes(p)) next.push(p);
+    for (const p of (commas ? raw.split(',') : [raw]).map((s) => s.trim()).filter(Boolean)) if (!next.includes(p)) next.push(p);
     onChange(next.slice(0, max));
     setDraft('');
   };
@@ -148,7 +148,7 @@ export function TagsField({ label, value, onChange, suggestions, hint, max = 30 
           list={suggestions ? listId : undefined}
           aria-label={label}
           placeholder={value.length ? '' : 'Ketik lalu Enter'}
-          onChange={(e) => (e.target.value.includes(',') ? add(e.target.value) : setDraft(e.target.value))}
+          onChange={(e) => (commas && e.target.value.includes(',') ? add(e.target.value) : setDraft(e.target.value))}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();

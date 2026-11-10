@@ -10,6 +10,7 @@ import Organization from './Organization';
 import Achievements from './Achievements';
 import Contact from './Contact';
 import CatBanner from './CatBanner';
+import RobotBanner from './RobotBanner';
 import { SectionId } from '@/lib/site/types';
 import type { SiteContent } from '@/lib/site/content';
 
@@ -79,7 +80,7 @@ const App = ({ content }: { content: SiteContent }) => {
           <Organization items={content.organization} />
 
           {/* Bottom Row Area */}
-          <CatBanner />
+          {content.assistant.variant === 'cats' ? <CatBanner /> : <RobotBanner content={content} />}
           <Achievements items={content.achievements} />
 
           <Projects items={content.projects} />

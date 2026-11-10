@@ -60,6 +60,16 @@ const Projects = ({ items }: { items: SiteContent['projects'] }) => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, selectedProject, activeCategory]);
 
+  // Robot asisten bisa membuka detail proyek lewat event (lihat RobotBanner)
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const p = items.find((x) => x.id === (e as CustomEvent<number>).detail);
+      if (p) openModal(p);
+    };
+    window.addEventListener('site:open-project', onOpen);
+    return () => window.removeEventListener('site:open-project', onOpen);
+  }, [items]);
+
   // Modal Handlers
   const openModal = (project: Project) => {
     setSelectedProject(project);

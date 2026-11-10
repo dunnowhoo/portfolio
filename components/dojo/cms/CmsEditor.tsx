@@ -21,6 +21,7 @@ const FIELD_LABEL: Record<string, string> = {
   degree: 'Jurusan', role: 'Peran', company: 'Perusahaan', period: 'Periode', description: 'Deskripsi', tech: 'Tech', link: 'Link', org: 'Organisasi',
   category: 'Kategori', title: 'Judul', icon: 'Ikon', key: 'Ikon', image: 'Gambar sampul', images: 'Galeri', embed: 'Embed', techStack: 'Tech stack',
   links: 'Link proyek', headingA: 'Judul baris 1', headingB: 'Judul baris 2', text: 'Teks', email: 'Email', scheduleUrl: 'Link jadwal call', ogImage: 'Gambar dibagikan',
+  variant: 'Banner', name: 'Nama robot', greeting: 'Sapaan', suggestions: 'Contoh pertanyaan', notes: 'Catatan',
 };
 
 function describe(k: SectionKey, path: string, value: unknown): string {
