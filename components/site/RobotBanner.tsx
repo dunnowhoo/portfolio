@@ -195,6 +195,28 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
       let buf = '';
       let raw = '';
       let failed = false;
+      let finished = false;
+      // Selesai begitu sinyal "end" datang (server masih mencatat log/cache sebelum menutup stream)
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        setBusy(false);
+        if (failed || !raw.trim()) {
+          update(aid, { status: 'error', note: `Something went wrong. You can email ${first} at ${content.contact.email}.` });
+          setPoseFor('sleep', 4000);
+          return;
+        }
+        const cites = extractCites(raw).slice(0, 4);
+        update(aid, { status: 'done', cites });
+        if (cites.length) {
+          // Robot terbang ke deretan kartu lalu kembali
+          const list = listRef.current;
+          const card = cardRef.current;
+          const y = list && card ? Math.min(list.getBoundingClientRect().bottom, card.getBoundingClientRect().bottom - 60) - card.getBoundingClientRect().top - 40 : 200;
+          deliver.current = { until: performance.now() + 2200, y };
+          setPoseFor('carry', 2400);
+        } else setPoseFor('idle');
+      };
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -211,23 +233,10 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
             raw += ev.v;
             update(aid, { raw, status: 'streaming' });
           } else if (ev.t === 'err') failed = true;
+          else if (ev.t === 'end') finish();
         }
       }
-      if (failed || !raw.trim()) {
-        update(aid, { status: 'error', note: `Something went wrong. You can email ${first} at ${content.contact.email}.` });
-        setPoseFor('sleep', 4000);
-        return;
-      }
-      const cites = extractCites(raw).slice(0, 4);
-      update(aid, { status: 'done', cites });
-      if (cites.length) {
-        // Robot terbang ke deretan kartu lalu kembali
-        const list = listRef.current;
-        const card = cardRef.current;
-        const y = list && card ? Math.min(list.getBoundingClientRect().bottom, card.getBoundingClientRect().bottom - 60) - card.getBoundingClientRect().top - 40 : 200;
-        deliver.current = { until: performance.now() + 2200, y };
-        setPoseFor('carry', 2400);
-      } else setPoseFor('idle');
+      finish();
     } catch (e) {
       if ((e as Error).name !== 'AbortError') {
         update(aid, { status: 'error', note: `I can't answer right now. You can email ${first} at ${content.contact.email}.` });
@@ -277,8 +286,18 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
       const o = content.organization.find((x) => x.id === c.id);
       return o ? { key: `o${o.id}`, title: o.role, sub: o.org, icon: 'groups', go: () => scrollToSection('organization') } : null;
     }
+    if (c.kind === 'c') {
+      const cv = content.profile.resumeUrl;
+      return cv ? { key: 'cv', title: 'Resume (PDF)', sub: 'Download CV', icon: 'description', go: () => window.open(cv, '_blank', 'noopener') } : null;
+    }
     const x = content.achievements.find((y) => y.id === c.id);
     return x ? { key: `a${x.id}`, title: x.title, sub: 'Achievement', icon: x.icon || 'emoji_events', go: () => scrollToSection('achievements') } : null;
+  };
+  type Card = NonNullable<ReturnType<typeof cardFor>>;
+  // Beberapa potongan CV → satu kartu "Resume"; kartu unik per kunci
+  const uniqueCards = (cites: Cite[]): Card[] => {
+    const seen = new Set<string>();
+    return cites.map(cardFor).filter((x): x is Card => !!x && !seen.has(x.key) && !!seen.add(x.key));
   };
 
   return (
@@ -352,9 +371,7 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
                   </div>
                   {m.status === 'done' && !!m.cites?.length && (
                     <ul className="flex flex-wrap gap-2" aria-label="Related items">
-                      {m.cites.map((c, i) => {
-                        const card = cardFor(c);
-                        if (!card) return null;
+                      {uniqueCards(m.cites).map((card, i) => {
                         return (
                           <li key={card.key} className="motion-safe:animate-[bot-drop_0.45s_cubic-bezier(.2,1.2,.4,1)_both]" style={{ animationDelay: `${0.25 + i * 0.12}s` }}>
                             <button type="button" onClick={card.go} className="flex w-[180px] items-center gap-2.5 rounded-2xl border border-black/5 bg-white p-2 text-left shadow-sm transition-transform hover:-translate-y-0.5">
