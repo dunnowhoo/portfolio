@@ -50,6 +50,9 @@ const iconMap: Record<string, string> = {
   onchainkit: "https://avatars.githubusercontent.com/u/148784705?s=200&v=4"
 };
 
+/** Nama ikon yang dikenal (dipakai editor CMS). */
+export const TECH_ICON_KEYS = Object.keys(iconMap);
+
 export const TechIcon: React.FC<TechIconProps> = ({ name, size = 8, className = "", showTooltip = false }) => {
   const iconUrl = iconMap[name.toLowerCase()] || iconMap['js'];
 

@@ -18,7 +18,7 @@ function connectionString(): string {
 
 export function getDb(): DB {
   if (!g.__dojoDb) {
-    const pool = new Pool({ connectionString: connectionString(), max: 5 });
+    const pool = new Pool({ connectionString: connectionString(), max: 5, keepAlive: true, idleTimeoutMillis: 10_000, connectionTimeoutMillis: 10_000 });
     attachDatabasePool(pool);
     g.__dojoDb = drizzle(pool, { schema });
   }

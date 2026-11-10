@@ -1,7 +1,7 @@
 import React from 'react';
-import { ORGANIZATIONS } from '@/lib/site/constants';
+import type { SiteContent } from '@/lib/site/content';
 
-const Organization = () => {
+const Organization = ({ items }: { items: SiteContent['organization'] }) => {
   return (
     <div className="glass-card bento-hover rounded-3xl p-6 md:col-span-2 lg:col-span-2 row-span-2 flex flex-col relative overflow-hidden">
       <div className="flex items-center gap-3 mb-4 relative z-10 shrink-0">
@@ -12,7 +12,7 @@ const Organization = () => {
       </div>
 
       <div className="overflow-y-auto custom-scrollbar flex-1 relative z-10 pr-1 space-y-4">
-        {ORGANIZATIONS.map((org) => (
+        {items.map((org) => (
           <div key={org.id} className="relative pl-3 border-l-2 border-gray-100 hover:border-[#0066cc] transition-colors group">
             <div className="mb-1">
               <h4 className="text-sm font-bold text-text-main leading-tight group-hover:text-[#0066cc] transition-colors">{org.role}</h4>

@@ -1,8 +1,8 @@
 import React from 'react';
-import { TECH_STACK } from '@/lib/site/constants';
+import type { SiteContent } from '@/lib/site/content';
 import { TechIcon } from './TechIcon';
 
-const TechStack = () => {
+const TechStack = ({ items }: { items: SiteContent['techstack'] }) => {
   return (
     <div className="glass-card bento-hover rounded-3xl p-6 md:col-span-2 lg:col-span-2 row-span-2 flex flex-col h-full" id="tech">
       <div className="flex items-center gap-2 mb-4 shrink-0">
@@ -13,7 +13,7 @@ const TechStack = () => {
       </div>
       
       <div className="flex flex-wrap justify-center gap-3 content-start">
-        {TECH_STACK.map((tech) => (
+        {items.map(({ key: tech }) => (
           <div 
             key={tech} 
             className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white/40 border border-gray-100 hover:scale-110 hover:shadow-lg hover:bg-white transition-all duration-300 w-[64px] h-[64px] group cursor-pointer"

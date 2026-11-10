@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { logoutAction } from '@/app/actions/auth';
+import AwardToaster from '@/components/dojo/AwardToaster';
 
 const MAIN = [
   { seg: 'beranda', icon: 'home', label: 'Beranda' },
@@ -15,12 +16,25 @@ const MAIN = [
 const MORE = [
   { seg: 'target', icon: 'flag', label: 'Target' },
   { seg: 'kalender', icon: 'calendar_month', label: 'Kalender' },
+  { seg: 'review', icon: 'replay', label: 'Review' },
   { seg: 'materi', icon: 'menu_book', label: 'Materi' },
   { seg: 'cms', icon: 'edit_note', label: 'Editor portfolio' },
   { seg: 'pengaturan', icon: 'settings', label: 'Pengaturan' },
 ];
 
-export default function DojoShell({ gate, children }: { gate: string; children: React.ReactNode }) {
+type Chip = { jp: number; dsa: number; jpSafe: boolean; dsaSafe: boolean };
+
+function StreakChip({ gate, chip, className = '' }: { gate: string; chip: Chip; className?: string }) {
+  return (
+    <Link href={`/${gate}/beranda`} className={`flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-[13px] font-semibold tabular-nums shadow-sm ${className}`} aria-label={`Streak 日本語 ${chip.jp} hari, DSA ${chip.dsa} hari`}>
+      <span className={chip.jpSafe ? 'text-[#e8453c]' : 'text-[#aeaeb2]'}>🔥{chip.jp}</span>
+      <span className="text-black/15">·</span>
+      <span className={chip.dsaSafe ? 'text-[#0066cc]' : 'text-[#aeaeb2]'}>🔥{chip.dsa}</span>
+    </Link>
+  );
+}
+
+export default function DojoShell({ gate, chip, children }: { gate: string; chip: Chip; children: React.ReactNode }) {
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
   const href = (seg: string) => `/${gate}/${seg}`;
@@ -45,6 +59,7 @@ export default function DojoShell({ gate, children }: { gate: string; children: 
               </Link>
             );
           })}
+          <StreakChip gate={gate} chip={chip} className="ml-1" />
           <form action={logoutAction}>
             <button type="submit" title="Keluar" className="px-2.5 py-2.5 rounded-full text-text-secondary hover:bg-gray-100 hover:text-[#c2452d] transition-colors">
               <span className="material-symbols-outlined text-[20px]">logout</span>
@@ -53,6 +68,8 @@ export default function DojoShell({ gate, children }: { gate: string; children: 
         </div>
       </nav>
 
+      <AwardToaster />
+      <StreakChip gate={gate} chip={chip} className="fixed right-4 top-4 z-40 md:hidden" />
       <main className="relative z-10 container mx-auto px-4 md:px-6 pt-8 md:pt-28 pb-28 md:pb-20 max-w-7xl">{children}</main>
 
       {/* HP: tab bar bawah */}

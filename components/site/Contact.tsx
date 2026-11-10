@@ -1,6 +1,7 @@
 import React from 'react';
+import type { SiteContent } from '@/lib/site/content';
 
-const Contact = () => {
+const Contact = ({ contact }: { contact: SiteContent['contact'] }) => {
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
@@ -15,7 +16,7 @@ const Contact = () => {
     e.preventDefault();
     const subject = `Project Inquiry from ${formData.name}`;
     const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
-    window.location.href = `mailto:sanjaya@ristek.cs.ui.ac.id?subject=${encodeURIComponent(subject)}&body=${body}`;
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
   };
 
   return (
@@ -25,23 +26,25 @@ const Contact = () => {
           <span className="material-symbols-outlined text-[16px]">mail</span>
           Get in Touch
         </div>
-        <h3 className="text-3xl md:text-4xl font-bold text-text-main mb-4">Let's build something <span className="text-[#86868b]">amazing together.</span></h3>
+        <h3 className="text-3xl md:text-4xl font-bold text-text-main mb-4">{contact.headingA} <span className="text-[#86868b]">{contact.headingB}</span></h3>
         <p className="text-text-secondary text-base leading-relaxed mb-8">
-          I'm currently available for projects and opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+          {contact.text}
         </p>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 group cursor-pointer">
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-gray-200 shadow-sm">
               <span className="material-symbols-outlined text-gray-500 group-hover:text-[#0066cc] transition-colors">alternate_email</span>
             </div>
-            <a href="mailto:sanjaya@ristek.cs.ui.ac.id" className="text-text-main font-medium group-hover:text-[#0066cc] transition-colors">sanjaya@ristek.cs.ui.ac.id</a>
+            <a href={`mailto:${contact.email}`} className="text-text-main font-medium group-hover:text-[#0066cc] transition-colors">{contact.email}</a>
           </div>
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-gray-200 shadow-sm">
-              <span className="material-symbols-outlined text-gray-500 group-hover:text-[#0066cc] transition-colors">calendar_month</span>
-            </div>
-            <span className="text-text-main font-medium group-hover:text-[#0066cc] transition-colors">Schedule a call</span>
-          </div>
+          {contact.scheduleUrl && (
+            <a href={contact.scheduleUrl} target="_blank" rel="noreferrer" className="flex items-center gap-4 group cursor-pointer">
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-gray-200 shadow-sm">
+                <span className="material-symbols-outlined text-gray-500 group-hover:text-[#0066cc] transition-colors">calendar_month</span>
+              </div>
+              <span className="text-text-main font-medium group-hover:text-[#0066cc] transition-colors">Schedule a call</span>
+            </a>
+          )}
         </div>
       </div>
       <div className="w-full md:w-1/2 relative z-10">

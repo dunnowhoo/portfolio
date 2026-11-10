@@ -1,7 +1,7 @@
 import React from 'react';
-import { EXPERIENCES } from '@/lib/site/constants';
+import type { SiteContent } from '@/lib/site/content';
 
-const Experience = () => {
+const Experience = ({ items }: { items: SiteContent['experience'] }) => {
   return (
     <div className="col-span-1 md:col-span-4 lg:col-span-4 row-span-3 relative h-full" id="experience">
 
@@ -19,7 +19,7 @@ const Experience = () => {
 
         {/* Scrollable List */}
         <div className="overflow-y-auto p-6 pt-2 space-y-6 flex-1 custom-scrollbar">
-          {EXPERIENCES.map((exp) => (
+          {items.map((exp) => (
             <div key={exp.id} className="relative pl-6 group">
               {/* Timeline Line */}
               <div className="absolute left-[9px] top-7 bottom-[-24px] w-[2px] bg-gray-200 group-last:bottom-auto group-last:h-full"></div>

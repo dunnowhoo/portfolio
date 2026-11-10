@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PROJECTS } from '@/lib/site/constants';
+import type { SiteContent } from '@/lib/site/content';
 import { TechIcon } from './TechIcon';
 import { Project } from '@/lib/site/types';
 
-const Projects = () => {
+const Projects = ({ items }: { items: SiteContent['projects'] }) => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<NodeJS.Timeout | null>(null);
@@ -17,8 +17,8 @@ const Projects = () => {
 
   // Filter projects
   const filteredProjects = activeCategory === 'All'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === activeCategory);
+    ? items
+    : items.filter(p => p.category === activeCategory);
 
   // Reset scroll when category changes
   useEffect(() => {
@@ -120,8 +120,8 @@ const Projects = () => {
         <div className="p-1 bg-white border border-gray-200 rounded-full flex overflow-x-auto no-scrollbar max-w-full shadow-sm">
           {['All', 'Web', 'Mobile', 'AI/Data', 'Smart City'].map((category) => {
             const count = category === 'All'
-              ? PROJECTS.length
-              : PROJECTS.filter(p => p.category === category).length;
+              ? items.length
+              : items.filter(p => p.category === category).length;
 
             return (
               <button
