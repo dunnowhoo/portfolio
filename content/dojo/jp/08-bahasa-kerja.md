@@ -150,4 +150,4 @@ Katakana IT seperti デプロイ, レビュー, dan マージ ada di `jp-02-kata
 - Bahasa Jepang saya masih dalam proses belajar, tapi saya akan berusaha supaya bisa cepat berkontribusi.
 - Mohon bimbingannya.
 
-**Latihan:** rekam dirimu mengucapkannya tanpa catatan. Targetnya **≤ 70 detik dan lancar**. Ini node ✍️ di Unit 4.6.
+**Latihan:** rekam dirimu mengucapkannya tanpa catatan. Targetnya **≤ 70 detik dan lancar**. Ini node refleksi di Unit 4.6.

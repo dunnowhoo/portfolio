@@ -5,13 +5,15 @@ import type { AwardResult } from '@/lib/dojo/engine/core';
 import { beltFor } from '@/lib/dojo/level';
 import { DARU_GEAR, daruTier, nextGear } from '@/lib/dojo/daru';
 import DaruAvatar from './DaruAvatar';
+import DojoIcon from './DojoIcon';
+import type { DojoIconName } from '@/lib/dojo/icons';
 
 // Umpan balik XP global: komponen mana pun cukup memanggil emitAward(result).
 export function emitAward(result: AwardResult) {
   window.dispatchEvent(new CustomEvent<AwardResult>('dojo:award', { detail: result }));
 }
 
-type Toast = { id: number; text: string; tone: 'xp' | 'goal' | 'streak' | 'repair' };
+type Toast = { id: number; text: string; tone: 'xp' | 'goal' | 'streak' | 'repair'; icon?: DojoIconName };
 
 export default function AwardToaster() {
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -29,7 +31,7 @@ export default function AwardToaster() {
       for (const ev of r.events) {
         next.push({ id: ++id, text: ev.xp ? `${ev.label} · +${ev.xp} XP` : ev.label, tone: ev.type === 'daily_goal' || ev.type === 'badge' ? 'goal' : ev.type === 'streak_repair' ? 'repair' : 'streak' });
       }
-      if (r.qualified && r.streak) next.push({ id: ++id, text: `🔥 Streak ${r.streak.track === 'jp' ? '日本語' : 'DSA'} aman · ${r.streak.current} hari`, tone: 'streak' });
+      if (r.qualified && r.streak) next.push({ id: ++id, text: `Streak ${r.streak.track === 'jp' ? '日本語' : 'DSA'} aman · ${r.streak.current} hari`, tone: 'streak', icon: r.streak.track === 'jp' ? 'flame' : 'flame-blue' });
       if (r.nitoryu) next.push({ id: ++id, text: `二刀流 · kedua streak aman (${r.nitoryu} hari)`, tone: 'streak' });
       setToasts((t) => [...t, ...next].slice(-5));
       for (const t of next) window.setTimeout(() => setToasts((all) => all.filter((x) => x.id !== t.id)), 3600);
@@ -51,7 +53,7 @@ export default function AwardToaster() {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`rounded-full px-4 py-2 text-sm font-semibold shadow-lg border backdrop-blur-md motion-safe:animate-[toast-in_0.25s_ease-out] ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold shadow-lg border backdrop-blur-md motion-safe:animate-[toast-in_0.25s_ease-out] ${
               t.tone === 'xp'
                 ? 'bg-[#fff8e1]/95 border-[#ffd76a] text-[#8a6100]'
                 : t.tone === 'goal'
@@ -61,6 +63,7 @@ export default function AwardToaster() {
                     : 'bg-[#fff1e6]/95 border-[#ffd2b0] text-[#a34b00]'
             }`}
           >
+            {t.icon && <DojoIcon name={t.icon} className="h-4 w-4" />}
             {t.text}
           </div>
         ))}

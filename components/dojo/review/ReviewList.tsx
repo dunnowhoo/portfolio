@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { reviewItem } from '@/app/actions/today';
 import { emitAward } from '@/components/dojo/AwardToaster';
+import { Stars } from '@/components/dojo/Sym';
 import { RATING_LABEL, type Rating } from '@/lib/dojo/engine/srs';
 
 export type ReviewRow = { id: string; title: string; sub: string; track: 'jp' | 'dsa'; due: string; stars: number; problem: boolean; overdue: number };
@@ -29,15 +30,12 @@ export default function ReviewList({ gate, rows }: { gate: string; rows: ReviewR
                 {r.overdue > 0 ? ` (telat ${r.overdue} hari)` : ''}
               </p>
             </div>
-            <span className="text-[13px] text-[#ffb800]" aria-label={`${r.stars} bintang`}>
-              {'★'.repeat(r.stars)}
-              <span className="text-[#d1d1d6]">{'★'.repeat(Math.max(0, 3 - r.stars))}</span>
-            </span>
+            <Stars n={r.stars} size="text-[15px]" />
           </div>
           {r.problem && (
             <label className="mt-2 flex items-center gap-2 text-[12px] text-text-secondary">
               <input type="checkbox" checked={!!quick[r.id]} onChange={(e) => setQuick((q) => ({ ...q, [r.id]: e.target.checked }))} className="rounded border-black/20 text-[#0066cc]" />
-              Mode cepat: recall pola + kompleksitas (tidak bisa naik ke ★3)
+              Mode cepat: recall pola + kompleksitas (tidak bisa naik ke bintang 3)
             </label>
           )}
           <div className="mt-3 grid grid-cols-4 gap-1.5">

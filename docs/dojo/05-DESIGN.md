@@ -26,6 +26,8 @@ Yang **dihindari:** warna neon, kartu gelap ramai, dan efek berlebihan. Dōjō d
 
 Token di bawah disalin dari config Tailwind CDN dan CSS portfolio. Di Tailwind v4 semuanya ditulis di `@theme`.
 
+> **Ikon di wireframe.** Sejak revamp ikon (10 November 2026) UI tidak memakai emoji. Wireframe di bawah memakai kode dua huruf untuk ikon ilustrasi (`lib/dojo/icons.ts`): `o-` lihat, `fl` streak, `!!` !, `fz` freeze, `pd` panduan, `ir` Irodori, `mt` materi, `vd` video, `kj` kanji, `lk` terkunci, `ak` Anki, `cp` checkpoint, `tm` timer, `rm` hapus, `lt` latihan, `bs` boss, `rf` refleksi, `dl` Duolingo. Glyph kecil (centang, bintang, panah) memakai Material Symbols.
+
 ```css
 @theme {
   /* dari portfolio */
@@ -72,7 +74,7 @@ Token di bawah disalin dari config Tailwind CDN dan CSS portfolio. Di Tailwind v
   - Ikon: Beranda · 日本語 · DSA · Hari ini · Target · Kalender · Profil · ⋯ (Materi, Review, CMS, Pengaturan).
   - Item aktif berupa pill biru muda dengan label, sama seperti tombol "Profile" di portfolio.
 - **HP (< 768 px):** tab bar bawah berisi 5 item (Beranda, 日本語, DSA, Hari ini, Profil) dengan *safe-area inset*. Menu lain ada di sheet ⋯.
-- **Chip streak di kanan atas nav** (🔥12 · 🔥8). Bisa diklik dan selalu terlihat dari halaman mana pun.
+- **Chip streak di kanan atas nav** ([streak]12 · [streak]8). Bisa diklik dan selalu terlihat dari halaman mana pun.
 
 ## 4. Layar
 
@@ -83,7 +85,7 @@ Token di bawah disalin dari config Tailwind CDN dan CSS portfolio. Di Tailwind v
 │                 │   [Daru mengintip di atas]   │        │
 │                 │   道場 · Dōjō                │        │
 │                 │   Username  [____________]   │        │
-│                 │   Password  [____________]👁 │        │
+│                 │   Password  [____________]o- │        │
 │                 │   ( Masuk → )  pill biru     │        │
 │                 │   pesan error abu, 1 baris   │        │
 │                 └──────────────────────────────┘        │
@@ -103,8 +105,8 @@ Tidak ada "lupa password", "daftar", atau link apa pun ke luar.
 │ ( Lanjut 日本語 ) ( Lanjut DSA )           │
 └────────────────────────────────────────────┘
 ┌ Streak 日本語 (2) ┐┌ Streak DSA (2) ┐┌ MISUMI (1) ┐┌ JLPT (1) ┐
-│ 🔥 12 hari  ✓     ││ 🔥 8  ⚠ berisiko││ D-691      ││ D-237    │
-│ 🧊🧊  sisa 5j 12m ││ 🧊   ( Mulai ) ││ ▓▓░░ 1%    ││ N5·perk. │
+│ fl 12 hari  ✓     ││ fl 8  !! berisiko││ D-691      ││ D-237    │
+│ fzfz  sisa 5j 12m ││ fz   ( Mulai ) ││ ▓▓░░ 1%    ││ N5·perk. │
 └───────────────────┘└────────────────┘└────────────┘└──────────┘
 ┌──── Hari ini (col 3) ─────────┐ ┌──── Target minggu ini (col 3) ───┐
 │ 3 quest + item shuffle + ring │ │ ring per target + bar bulanan    │
@@ -126,15 +128,15 @@ Di HP semuanya menjadi satu kolom dengan urutan: banner → hero → streak (2 k
         │  ◀ はじめまして         好きなもの ▶       │
         │        じぶんのこと                         │
         │    About Myself · Unit 1.2 · 2/7 ✓          │
-        │   ( 📘 Panduan unit )                        │
+        │   ( pd Panduan unit )                        │
         └─────────────────────────────────────────────┘
-                     ●  📗 Irodori L3       ✓ ★★
-                         ●  📖 Grammar G05–G08  ✓ ★
-                              ◉  🎬 Video は vs が   ← MULAI (berdenyut)
+                     ●  ir Irodori L3       ✓ ★★
+                         ●  mt Grammar G05–G08  ✓ ★
+                              ◉  vd Video は vs が   ← MULAI (berdenyut)
    - - - - - - - - - - - - - - - - - - - - - - -  "seharusnya di sini hari ini"
-                         ○  🈁 Kanji batch 2   🔒
-                     ○  🃏 Kaishi 250       🔒
-                 ⬢  🏯 Checkpoint 1.2      🔒
+                         ○  kj Kanji batch 2   lk
+                     ○  ak Kaishi 250       lk
+                 ⬢  cp Checkpoint 1.2      lk
 ```
 - **Node:** lingkaran 72 px (HP 64 px) dengan jarak vertikal 96 px. Offset horizontal mengikuti pola sinus `[0, 56, 84, 56, 0, −56, −84, −56]` px.
 - **Warna status:**
@@ -154,12 +156,12 @@ Di HP semuanya menjadi satu kolom dengan urutan: banner → hero → streak (2 k
 ### 4.4 Panel node (sheet)
 - Desktop: panel kanan selebar 560 px. HP: *bottom sheet* 92% tinggi layar.
 ```
-┌ 🎬  Video: Partikel は dan が                 ✕ ┐
+┌ vd  Video: Partikel は dan が                 ✕ ┐
 │ 12 mnt · +10 XP · target 14 Des                  │
 │ [Materi] [Video] [Latihan] [Sumber] [Catatan]    │
 │ ┌───────────── youtube-nocookie 16:9 ──────────┐ │
 │ └──────────────────────────────────────────────┘ │
-│ ⏱ 00:12:41  (Jeda)        + catat menit         │
+│ tm 00:12:41  (Jeda)        + catat menit         │
 │ ──────────────────────────────────────────────── │
 │ Seberapa yakin?  (Lupa)(Sulit)(Baik)(Mudah)       │
 │ (        Tandai selesai  +10 XP        )  biru   │
@@ -200,8 +202,8 @@ Di HP semuanya menjadi satu kolom dengan urutan: banner → hero → streak (2 k
 ```
 ┌ Sidebar bagian ─────┐ ┌ Editor ───────────────────────────────┐ ┌ Preview ───────────┐
 │ Profil          ●   │ │ PROYEK · 17 item      (+ Tambah)       │ │ komponen asli      │
-│ Sosial              │ │ ≡ DKE Smart Sales & CRM   Web   👁 ✎ ⧉ 🗑│ │ portfolio dengan   │
-│ Pendidikan          │ │ ≡ Saka                    Mobile 👁 ✎ ⧉ 🗑│ │ data draf          │
+│ Sosial              │ │ ≡ DKE Smart Sales & CRM   Web   o- ✎ ⧉ rm│ │ portfolio dengan   │
+│ Pendidikan          │ │ ≡ Saka                    Mobile o- ✎ ⧉ rm│ │ data draf          │
 │ Pengalaman          │ │ ...                                    │ │ (lebar 390/1440)   │
 │ Organisasi          │ │ ── form item terpilih ──               │ │                    │
 │ Prestasi            │ │ Judul / Deskripsi / Kategori / Tech    │ │                    │
@@ -231,7 +233,7 @@ Di HP semuanya menjadi satu kolom dengan urutan: banner → hero → streak (2 k
 | `DarumaShelf` | Daruma SVG + mata (lapisan SVG yang dianimasikan seperti kuas) |
 | `XPToast` | Chip "+20 XP" yang terbang ke XPBar |
 | `LevelUpModal` | Daru mengikat sabuk baru + confetti |
-| `WarBanner` | Merah lembut `--color-jp-soft`, ikon 🎌, countdown jam:menit, checklist, tombol jlptonline ↗ |
+| `WarBanner` | Merah lembut `--color-jp-soft`, ikon [milestone], countdown jam:menit, checklist, tombol jlptonline ↗ |
 
 ## 6. Gerak
 

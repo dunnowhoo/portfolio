@@ -74,7 +74,7 @@ async function generate(track: Track, today: string, seed: string): Promise<Dail
   if (track === 'dsa') {
     const path = firstAvailable('dsa', statuses, (n) => n.type === 'soal') ?? nextNode('dsa', statuses);
     if (path) items.push({ id: 'dsa:path', kind: 'node', title: path.title, subtitle: path.problem ? `Jalur · ${path.subtitle}` : 'Jalur · berikutnya', nodeId: path.id, xp: path.xp });
-    // Acak: soal belum selesai dari topik lain yang sudah terbuka; kalau tidak ada, soal ★ terendah
+    // Acak: soal belum selesai dari topik lain yang sudah terbuka; kalau tidak ada, soal berbintang terendah
     const probs = await getDb().select().from(problemProgress);
     const solved = new Map(probs.map((p) => [p.problemId, p]));
     const open = ORDERED.dsa.filter((n) => n.problem && n.id !== path?.id && statuses.get(n.id) === 'available');
@@ -84,7 +84,7 @@ async function generate(track: Track, today: string, seed: string): Promise<Dail
     } else {
       const low = [...solved.values()].filter((p) => p.status === 'solved').sort((a, b) => a.mastery - b.mastery);
       const pick = low.length ? low[Math.floor(rand() * Math.min(3, low.length))] : undefined;
-      if (pick && NODES.get(pick.problemId)) items.push({ id: `dsa:review:${pick.problemId}:x`, kind: 'review', title: NODES.get(pick.problemId)!.title, subtitle: 'Acak · ulangi soal ★ terendah', nodeId: pick.problemId, xp: 10, review: true });
+      if (pick && NODES.get(pick.problemId)) items.push({ id: `dsa:review:${pick.problemId}:x`, kind: 'review', title: NODES.get(pick.problemId)!.title, subtitle: 'Acak · ulangi soal dengan bintang terendah', nodeId: pick.problemId, xp: 10, review: true });
     }
     const due = probs
       .filter((p) => p.srsDue && p.srsDue <= today && p.status === 'solved')

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { logoutAction } from '@/app/actions/auth';
 import AwardToaster from '@/components/dojo/AwardToaster';
+import DojoIcon from '@/components/dojo/DojoIcon';
 
 const MAIN = [
   { seg: 'beranda', icon: 'home', label: 'Beranda' },
@@ -27,9 +28,15 @@ type Chip = { jp: number; dsa: number; jpSafe: boolean; dsaSafe: boolean };
 function StreakChip({ gate, chip, className = '' }: { gate: string; chip: Chip; className?: string }) {
   return (
     <Link href={`/${gate}/beranda`} className={`flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-[13px] font-semibold tabular-nums shadow-sm ${className}`} aria-label={`Streak 日本語 ${chip.jp} hari, DSA ${chip.dsa} hari`}>
-      <span className={chip.jpSafe ? 'text-[#e8453c]' : 'text-[#aeaeb2]'}>🔥{chip.jp}</span>
+      <span className={`inline-flex items-center gap-1 ${chip.jpSafe ? 'text-[#e8453c]' : 'text-[#aeaeb2]'}`}>
+        <DojoIcon name="flame" className="h-4 w-4" muted={!chip.jpSafe} />
+        {chip.jp}
+      </span>
       <span className="text-black/15">·</span>
-      <span className={chip.dsaSafe ? 'text-[#0066cc]' : 'text-[#aeaeb2]'}>🔥{chip.dsa}</span>
+      <span className={`inline-flex items-center gap-1 ${chip.dsaSafe ? 'text-[#0066cc]' : 'text-[#aeaeb2]'}`}>
+        <DojoIcon name="flame-blue" className="h-4 w-4" muted={!chip.dsaSafe} />
+        {chip.dsa}
+      </span>
     </Link>
   );
 }

@@ -31,7 +31,7 @@ tags: [interview, mock, kontes, atcoder, paiza]
 Lebih baik lagi kalau bisa bertukar peran dengan teman sesama pejuang interview: satu jadi interviewer, satu jadi kandidat.
 
 ## 3. Checklist H-1 interview
-- [ ] Review 10 soal ★ terendah dalam mode cepat (pola + kompleksitas).
+- [ ] Review 10 soal dengan bintang terendah dalam mode cepat (pola + kompleksitas).
 - [ ] Baca ulang lembar "Sinyal → pola" di `dsa-04`.
 - [ ] Siapkan 3 cerita proyek dengan format STAR (Situation, Task, Action, Result). Contohnya Halo AI dan Propago (62 pengguna dalam 3 minggu).
 - [ ] Siapkan pertanyaan untuk interviewer: tim, cara kerja, tantangan teknis.

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { getDb } from '@/db/client';
 import { countdown, daruma, jlptSession } from '@/db/schema';
 import CalendarBoard from '@/components/dojo/calendar/CalendarBoard';
+import DojoIcon from '@/components/dojo/DojoIcon';
 import { DEFAULT_WAR_CHECKLIST, JLPT_STATUS, icsToken, reminders, warState } from '@/lib/dojo/calendar';
 import { requireDojo } from '@/lib/dojo/dal';
 import { getProfile } from '@/lib/dojo/engine/core';
@@ -45,7 +46,8 @@ export default async function KalenderPage({ params }: { params: Promise<{ gate:
         <h1 className="text-3xl font-bold text-text-main md:text-4xl">Kalender & JLPT</h1>
         {war && (
           <p className="mt-3 rounded-2xl bg-[#fdecea] px-4 py-3 text-sm font-medium text-[#a3271f]">
-            🎌 WAR {war.session.levelPlanned}: pendaftaran {war.phase === 'open' ? 'SEDANG BUKA' : `buka ${shortDateId(war.opensAt, tz)}`}. Siapkan checklist di bawah dan daftar di jlptonline.or.id.
+            <DojoIcon name="banner" className="mr-1.5 h-5 w-5" />
+            WAR {war.session.levelPlanned}: pendaftaran {war.phase === 'open' ? 'SEDANG BUKA' : `buka ${shortDateId(war.opensAt, tz)}`}. Siapkan checklist di bawah dan daftar di jlptonline.or.id.
           </p>
         )}
       </div>

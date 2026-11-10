@@ -126,7 +126,7 @@ export async function reviewItem(raw: z.input<typeof ReviewInput>): Promise<Ok> 
     const result = await award({ track: 'dsa', type: 'review', refId: id, xp: 10, minutes, payload: { rating, quick: !!quick, comeback: wasForgotten }, dedupeKey: `review:${id}:${today}`, counters: { reviews: 1 } });
     await afterDaily();
     result.events.push(...(await badgeEvents()));
-    return { ok: true, result, message: `Review berikutnya ${next.due}${next.mastery > p.mastery ? ` · naik ke ${'★'.repeat(next.mastery)}` : ''}` };
+    return { ok: true, result, message: `Review berikutnya ${next.due}${next.mastery > p.mastery ? ` · naik ke bintang ${next.mastery}` : ''}` };
   }
   const [np] = await db.select().from(nodeProgress).where(eq(nodeProgress.nodeId, id));
   if (!np) return { ok: false, error: 'Node ini belum selesai.' };

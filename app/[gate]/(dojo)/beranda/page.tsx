@@ -15,6 +15,8 @@ import { getTodayStateCached, type StreakView } from '@/lib/dojo/engine/core';
 import { beltFor } from '@/lib/dojo/level';
 import { nextGear } from '@/lib/dojo/daru';
 import DaruAvatar from '@/components/dojo/DaruAvatar';
+import DojoIcon from '@/components/dojo/DojoIcon';
+import { Sym } from '@/components/dojo/Sym';
 import { loadProgress } from '@/lib/dojo/progress';
 import { daysUntil, greeting, longDateId, shortDateId } from '@/lib/dojo/time';
 
@@ -25,7 +27,7 @@ const TRACKS: { key: Track; label: string; seg: string; color: string; soft: str
 ];
 
 const STATUS: Record<StreakView['status'], { text: string; tone: string }> = {
-  aman: { text: 'Aman hari ini ✓', tone: 'text-[#1f7a3a]' },
+  aman: { text: 'Aman hari ini', tone: 'text-[#1f7a3a]' },
   belum: { text: 'Belum aman', tone: 'text-text-secondary' },
   berisiko: { text: 'Berisiko, sudah lewat 18:00', tone: 'text-[#c25e00]' },
   retak: { text: 'Retak 七転び八起き', tone: 'text-[#0b6b94]' },
@@ -77,7 +79,7 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
     <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6 lg:grid-cols-6">
       {war && (
         <Link href={`/${gate}/kalender`} className="flex flex-wrap items-center gap-3 rounded-3xl border border-[#f5c2be] bg-[#fdecea] px-6 py-4 md:col-span-4 lg:col-span-6">
-          <span className="text-2xl" aria-hidden="true">🎌</span>
+          <DojoIcon name="banner" className="h-9 w-9" />
           <div className="min-w-0 flex-1">
             <p className="font-semibold text-[#a3271f]">
               WAR JLPT {war.session.levelPlanned}: pendaftaran {war.phase === 'open' ? 'SEDANG BUKA' : `buka ${shortDateId(war.opensAt, tz)}`}
@@ -167,23 +169,36 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
               <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
                 Streak <span className="font-jp normal-case" lang={t.key === 'jp' ? 'ja' : undefined}>{t.label}</span>
               </p>
-              <span className="flex gap-0.5 text-[#32ade6]" title={`${s.freezes} freeze`} aria-label={`${s.freezes} freeze`}>
+              <span className="flex gap-0.5" title={`${s.freezes} freeze`} role="img" aria-label={`${s.freezes} freeze`}>
                 {Array.from({ length: s.freezes }).map((_, i) => (
-                  <span key={i} className="material-symbols-outlined text-[18px]">ac_unit</span>
+                  <DojoIcon key={i} name="ice" className="h-5 w-5" />
                 ))}
               </span>
             </div>
             <div className="flex items-end gap-2">
-              <span className={`material-symbols-outlined text-[40px] ${s.status === 'aman' ? 'text-[#ff9500]' : s.status === 'berisiko' ? 'text-[#ff9500] motion-safe:animate-pulse' : 'text-[#c7c7cc]'}`}>local_fire_department</span>
+              <DojoIcon name={t.key === 'jp' ? 'flame' : 'flame-blue'} className={`mb-1 h-10 w-10 ${s.status === 'berisiko' ? 'motion-safe:animate-pulse' : ''}`} muted={s.status !== 'aman' && s.status !== 'berisiko'} />
               <span className="text-5xl font-bold tabular-nums text-text-main">{s.current}</span>
               <span className="mb-1.5 text-text-secondary">hari</span>
             </div>
-            <p className={`text-sm font-medium ${st.tone}`}>{st.text}</p>
+            <p className={`flex items-center gap-1 text-sm font-medium ${st.tone}`}>
+              {st.text}
+              {s.status === 'aman' && <Sym name="check" className="text-[16px]" />}
+            </p>
             <p className="text-xs text-text-secondary">
               {s.status === 'retak'
                 ? `Capai ${s.repairTarget} XP hari ini untuk memulihkan streak.`
                 : s.status === 'aman'
-                  ? `Terpanjang ${s.longest} hari${s.frozenYesterday ? ' · kemarin tertutup freeze 🧊' : ''}`
+                  ? (
+                    <>
+                      Terpanjang {s.longest} hari
+                      {s.frozenYesterday && (
+                        <>
+                          {' · kemarin tertutup freeze '}
+                          <DojoIcon name="ice" className="h-3.5 w-3.5" />
+                        </>
+                      )}
+                    </>
+                  )
                   : `Butuh ${need} XP lagi · sisa ${hm(s.minutesLeft)}`}
             </p>
             {t.next && (
@@ -230,7 +245,11 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
             </li>
           ))}
         </ul>
-        {daily.perfect && <p className="text-[13px] font-semibold text-[#1f7a3a]">Perfect day ✓</p>}
+        {daily.perfect && (
+          <p className="flex items-center gap-1 text-[13px] font-semibold text-[#1f7a3a]">
+            Perfect day <Sym name="check" className="text-[16px]" />
+          </p>
+        )}
       </section>
 
       {/* Target minggu ini */}
@@ -246,7 +265,7 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
             <li key={g.id} className="flex items-center gap-2 text-[13px]">
               <span className="w-12 font-jp text-[12px]" style={{ color: g.track === 'jp' ? '#e8453c' : '#0066cc' }}>{g.track === 'jp' ? '日本語' : 'DSA'}</span>
               <span className={`min-w-0 flex-1 truncate ${g.done ? 'text-text-secondary line-through' : 'text-text-main'}`}>{g.title}</span>
-              <span className="tabular-nums text-text-secondary">{g.metric === 'manual' ? (g.done ? '✓' : '—') : `${g.progress}/${g.target}`}</span>
+              <span className="tabular-nums text-text-secondary">{g.metric === 'manual' ? g.done ? <Sym name="check" className="text-[16px] text-[#1f7a3a]" label="selesai" /> : '—' : `${g.progress}/${g.target}`}</span>
             </li>
           ))}
         </ul>
@@ -289,7 +308,10 @@ export default async function Beranda({ params }: { params: Promise<{ gate: stri
               const def = BADGES.find((x) => x.id === b.badgeId);
               return (
                 <li key={b.badgeId} className="rounded-2xl border border-[#ffd76a] bg-[#fffaf0] p-3">
-                  <p className="font-jp text-[14px] font-semibold text-text-main">🏅 {def?.name ?? b.badgeId}</p>
+                  <p className="flex items-center gap-1.5 font-jp text-[14px] font-semibold text-text-main">
+                    <DojoIcon name="medal" className="h-5 w-5" />
+                    {def?.name ?? b.badgeId}
+                  </p>
                   <p className="text-[11px] text-text-secondary">{def?.hint}</p>
                 </li>
               );

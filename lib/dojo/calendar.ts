@@ -92,7 +92,7 @@ export async function buildIcs(): Promise<string> {
   for (const s of sessions) {
     const lvl = s.levelPlanned ?? 'JLPT';
     const est = s.isEstimate ? ' (perkiraan)' : '';
-    evs.push({ uid: `jlpt-exam-${s.examDate}`, title: `🎌 JLPT ${lvl}${est}`, allDay: s.examDate, desc: `${s.city ?? ''} ${s.notes ?? ''}`.trim(), alarms: [7 * 1440, 1440] });
+    evs.push({ uid: `jlpt-exam-${s.examDate}`, title: `JLPT ${lvl}${est}`, allDay: s.examDate, desc: `${s.city ?? ''} ${s.notes ?? ''}`.trim(), alarms: [7 * 1440, 1440] });
     if (s.regOpenAt) evs.push({ uid: `jlpt-reg-open-${s.examDate}`, title: `WAR: pendaftaran JLPT ${lvl} buka${est}`, start: s.regOpenAt, desc: `Daftar di ${s.sourceUrl ?? 'https://jlptonline.or.id/'}`, alarms: [14 * 1440, 7 * 1440, 1440, 0] });
     if (s.regCloseAt) evs.push({ uid: `jlpt-reg-close-${s.examDate}`, title: `Pendaftaran JLPT ${lvl} tutup${est}`, start: s.regCloseAt, alarms: [1440] });
   }

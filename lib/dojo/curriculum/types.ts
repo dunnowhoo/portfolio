@@ -1,4 +1,5 @@
 // Struktur jalur: Section → Unit → Node (docs/dojo/01-PRD.md F3–F5, curriculum/*.md)
+import type { DojoIconName } from '../icons';
 
 export type Track = 'jp' | 'dsa';
 
@@ -90,19 +91,20 @@ export type Section = {
   units: Unit[];
 };
 
-export const NODE_ICON: Record<NodeType, string> = {
-  materi: '📖',
-  video: '🎬',
-  irodori: '📗',
-  latihan: '🎯',
-  duolingo: '🟢',
-  anki: '🃏',
-  checkpoint: '🏯',
-  boss: '👹',
-  milestone: '🎌',
-  refleksi: '✍️',
-  soal: '🎯',
-  bicara: '🗣️',
+// Ikon ilustrasi per tipe node (lib/dojo/icons.ts), bukan emoji.
+export const NODE_ICON: Record<NodeType, DojoIconName> = {
+  materi: 'materi',
+  video: 'video',
+  irodori: 'irodori',
+  latihan: 'target',
+  duolingo: 'duolingo',
+  anki: 'anki',
+  checkpoint: 'castle',
+  boss: 'oni',
+  milestone: 'banner',
+  refleksi: 'brush',
+  soal: 'target',
+  bicara: 'speech',
 };
 
 export const NODE_LABEL: Record<NodeType, string> = {
