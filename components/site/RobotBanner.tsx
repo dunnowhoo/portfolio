@@ -60,6 +60,7 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
   const tiltRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const pointer = useRef<{ x: number; y: number } | null>(null);
+  const hoverBot = useRef(false); // kursor di atas robot → robot diam supaya antena mudah diklik
   const deliver = useRef<{ until: number; y: number } | null>(null);
   const poseTimer = useRef<number | undefined>(undefined);
   const greeted = useRef(false);
@@ -99,6 +100,9 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
       if (deliver.current && now < deliver.current.until && wide) {
         tx = zone.x0 - s * 0.35;
         ty = Math.min(zone.y1, Math.max(zone.y0, deliver.current.y - s * 0.55));
+      } else if (hoverBot.current && x >= 0) {
+        tx = x;
+        ty = y;
       } else if (pointer.current && wide && !reduce) {
         tx = Math.min(zone.x1, Math.max(zone.x0, pointer.current.x - s / 2));
         ty = Math.min(zone.y1, Math.max(zone.y0, pointer.current.y - s / 2));
@@ -422,7 +426,11 @@ export default function RobotBanner({ content }: { content: SiteContent }) {
                 decoding="async"
                 onPointerDown={p === pose ? onBotDown : undefined}
                 onPointerUp={onBotUp}
-                onPointerLeave={onBotUp}
+                onPointerEnter={() => (hoverBot.current = true)}
+                onPointerLeave={() => {
+                  hoverBot.current = false;
+                  onBotUp();
+                }}
                 onClick={p === pose ? onBotClick : undefined}
                 className={`absolute inset-0 h-full w-full select-none object-contain transition-opacity duration-200 ${p === pose ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
               />
