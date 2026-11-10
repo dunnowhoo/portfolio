@@ -347,3 +347,19 @@ Perubahan dari rencana awal di atas:
 - **Kalender:** status sesi JLPT menyelesaikan node WAR/ujian dan memberi XP lulus (+1.000) serta mata kanan Daruma. `.ics` dibangun di server dengan VALARM; URL langganan memakai token HMAC dari `AUTH_SECRET` (ganti `AUTH_SECRET` = URL lama tidak berlaku).
 - **Pengaturan:** mode sibuk hanya untuk hari yang belum dimulai (maks 3/bulan/jalur); ekspor JSON seluruh tabel kecuali sesi dan percobaan login.
 - **Tidak dibuat:** pengingat email (Resend) dan cron harian, sesuai keputusan "pengingat lewat email jangan dulu". Pengingat muncul sebagai banner WAR, daftar pengingat, dan alarm `.ics`. Streak, quest, dan target dihitung malas sehingga tidak butuh cron.
+
+## 19. Catatan implementasi M4: CMS halaman utama (10 November 2026)
+
+- **Model data:** satu baris `site_section` per bagian (profil, sosial, pendidikan, pengalaman, organisasi, prestasi, tech stack, proyek, kontak, SEO) berisi `draft` dan `published` (jsonb). Setiap terbit menambah versi di `site_revision` (50 versi terakhir per bagian disimpan). Isi awal = konten situs lama (`lib/site/content.ts`), di-seed saat editor pertama kali dibuka.
+- **Halaman publik `/`** statis dengan ISR: membaca `published`, diperbarui lewat `revalidatePath('/')` saat terbit (paling lambat 1 jam). Saat build tanpa DB dipakai isi bawaan; saat runtime DB error, error dilempar supaya ISR tetap menyajikan versi terakhir yang berhasil. Item yang disembunyikan dibuang di server (`publicContent`), jadi tidak ikut payload RSC ke browser.
+- **Validasi** (`lib/site/validate.ts`, zod) dijalankan di server action dan diulang sebelum terbit. URL hanya `http(s)`, path `/…`, atau `mailto:` (khusus sosial). Kode embed hanya boleh iframe `https` dari host tepercaya (Canva, YouTube, Vimeo, Figma, Google Docs, Loom), tanpa script, atribut event, atau `srcdoc`; link biasa YouTube/Canva/Figma/Vimeo otomatis diubah jadi kode embed.
+- **Upload** `POST /api/dojo/upload` (wajib sesi, Origin dicek): PNG/JPEG/WebP/GIF/AVIF atau PDF ≤ 8 MB; tipe dicek dari byte awal file (SVG ditolak). Editor mengecilkan gambar ke ≤ 2400 px dan mengonversi ke WebP di browser, sehingga EXIF/GPS ikut terbuang. File disimpan di Neon Object Storage `public/cms/YYYY-MM/<uuid>.<ext>`, disajikan lewat `/media/…` dengan cache immutable, metadata di `media_asset`.
+- **Editor `/<slug>/cms`:** simpan draf (juga Cmd/Ctrl+S), pratinjau draf di `/<slug>/preview` (noindex, wajib sesi), terbitkan beberapa bagian sekaligus dengan catatan versi, riwayat dengan "Muat ke draf", dan "Kembalikan ke versi terbit".
+- **Kontak:** "Schedule a call" sekarang link ke halaman booking Google Calendar; kosongkan field-nya untuk menyembunyikan baris itu.
+- **Tes:** E2E M4 (38 cek) di branch `e2e`, termasuk paritas piksel halaman utama terhadap screenshot sebelum refactor (desktop 0 px berbeda di luar carousel yang bergulir otomatis). Objek storage hasil uji upload dihapus di akhir tes.
+
+## 20. Catatan implementasi M5: evolusi Daru (10 November 2026)
+
+- **11 tingkat ↔ 11 sabuk** (`lib/dojo/daru.ts`): daruma polos → hachimaki → bokken → sode → dō dan katana → kote → kusazuri dan wakizashi → kabuto → kuwagata → katana terhunus → zirah lengkap dan sashimono.
+- **Gambar** `public/assets/dojo/daru/tier-NN.webp` (512 px, latar transparan) dibuat sekali dengan OpenAI Images `gpt-image-1.5` lewat `scripts/daru-gen.mjs`. Tingkat 2–11 adalah edit dari tingkat sebelumnya supaya karakternya konsisten. Key OpenAI hanya dibaca dari `.env.local` saat membuat aset; aplikasi tidak memanggil OpenAI saat runtime.
+- **Tampilan:** avatar Daru di Beranda dan Profil; Profil punya galeri evolusi (tingkat yang belum terbuka tampil sebagai siluet). Modal naik level menampilkan transisi Daru lama → baru dan nama perlengkapan baru saat sabuk naik; kalau sabuk belum naik, modal menyebut perlengkapan berikutnya dan levelnya. Daruma target (tradisi melukis mata) tetap memakai ikon SVG.
